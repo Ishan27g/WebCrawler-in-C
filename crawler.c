@@ -66,6 +66,7 @@ int main(int argc, char **argv)
 		crawler.visit[i] = 0;
 	}
 	parse_html_file(HTML_FILE_LOCAL, &crawler);
+	/*
 	for(i=0;i<1;i++)
 	{
 		printf("\nsend request for %s\n",crawler.visited_url[i]);
@@ -80,7 +81,7 @@ int main(int argc, char **argv)
 		//	parse valid urls
 		//	add urls to crawler
 	}
-
+*/
 
 	printf("\nUrls visited - %d\n",crawler.visited_count);
 	

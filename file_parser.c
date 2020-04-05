@@ -132,12 +132,12 @@ int match_host(Href_url* href_url)
 	}
 	if(x == count-1)
 	{
-		printf("\nCrawl this url\n");
+		//printf("\nCrawl this url\n");
 		return 1;
 	}
 	else
 	{
-		printf("\nDont Crawl this url\n");
+//		printf("\nDont Crawl this url\n");
 		return 0;
 	}
 	return 0;
@@ -228,7 +228,7 @@ int extract_validate_href(char* string, Href_url* href_url)
 	char *dest_string, *dest_temp;
 	dest_string = strtok_r(string, "\"", &dest_temp);
 	dest_string = strtok_r(NULL, "\"", &dest_temp);
-	printf("\n---------------------------------\nvalidating url %s",dest_string);
+	//printf("\n---------------------------------\nvalidating url %s",dest_string);
 	return validate_url(dest_string, href_url);
 	
 }
@@ -273,7 +273,7 @@ void parse_html_file(char* filename, Web_crawler *crawler)
 					crawler->visit[crawler->visited_count] = 0;
 					crawler->visited_url[crawler->visited_count] = malloc(strlen(href_url.hostname) + strlen(href_url.resource_filename)+10);
 					sprintf(crawler->visited_url[crawler->visited_count],"http://%s/%s\n",href_url.hostname, href_url.resource_filename);
-					printf("\nvalue adding to Bstree is :%s\n",crawler->visited_url[crawler->visited_count]);
+					printf("\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
 					crawler->visited_count++;
 
 				//	}	

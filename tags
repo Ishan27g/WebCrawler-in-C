@@ -1,0 +1,53 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CRAWLER_H	crawler.h	3;"	d
+FILE_PARSER_H	file_parser.h	3;"	d
+HTML_FILE_LOCAL	client.h	18;"	d
+HTML_FILE_LOCAL	crawler.h	22;"	d
+HTTP_HDRS_H	http_headers.h	3;"	d
+HTTP_REQ_STR	client.h	16;"	d
+HTTP_REQ_STR	crawler.h	20;"	d
+HTTP_REQ_STR_LEN	client.h	15;"	d
+HTTP_REQ_STR_LEN	crawler.h	19;"	d
+Href_url	file_parser.h	/^}Href_url;$/;"	t	typeref:struct:Href_url_tag
+Href_url_tag	file_parser.h	/^typedef struct Href_url_tag{$/;"	s
+Http_header	http_headers.h	/^} Http_header;$/;"	t	typeref:struct:Http_rsp_headers
+Http_rsp_headers	http_headers.h	/^typedef struct Http_rsp_headers{$/;"	s
+MAX_URL_STR_LEN	client.h	19;"	d
+MAX_URL_STR_LEN	crawler.h	23;"	d
+PORT_NUMBER	client.h	17;"	d
+PORT_NUMBER	crawler.h	21;"	d
+QUEUE_SIZE	crawler.h	24;"	d
+SOCK_H	socket_operations.h	2;"	d
+Web_crawler	crawler.h	/^}Web_crawler;$/;"	t	typeref:struct:Web_crawler_struct
+Web_crawler_struct	crawler.h	/^typedef struct Web_crawler_struct{$/;"	s
+count_dots	file_parser.c	/^int count_dots(char* string)$/;"	f
+extract_validate_href	file_parser.c	/^int extract_validate_href(char* string, Href_url* href_url)$/;"	f
+fill_constituents	file_parser.c	/^int fill_constituents(char** constituent, char* url)$/;"	f
+fill_http_header	http_headers.c	/^void* fill_http_header(char *dest_string, Http_header *dest)$/;"	f
+get_http_header	http_headers.c	/^void* get_http_header(char* buffer, Http_header *dest, char* html_content)$/;"	f
+get_resource_name	file_parser.c	/^char* get_resource_name(char** constituent, int count)$/;"	f
+hostname	file_parser.h	/^	char* hostname;$/;"	m	struct:Href_url_tag
+http_content_length	http_headers.h	/^	int http_content_length;$/;"	m	struct:Http_rsp_headers
+http_content_type	http_headers.h	/^	char* http_content_type;$/;"	m	struct:Http_rsp_headers
+http_rsp_code	http_headers.h	/^	char* http_rsp_code;$/;"	m	struct:Http_rsp_headers
+http_server	http_headers.h	/^	char* http_server;$/;"	m	struct:Http_rsp_headers
+http_version	http_headers.h	/^	char* http_version;$/;"	m	struct:Http_rsp_headers
+initialise_socket	socket_operations.c	/^int initialise_socket()$/;"	f
+main	client.c	/^int main(int argc, char **argv)$/;"	f
+main	crawler.c	/^int main(int argc, char **argv)$/;"	f
+match_host	file_parser.c	/^int match_host(Href_url* href_url)$/;"	f
+original_host	client.c	/^char* original_host;$/;"	v
+original_host	crawler.c	/^char* original_host;$/;"	v
+parse_html_file	file_parser.c	/^void parse_html_file(char* filename, Web_crawler *crawler)$/;"	f
+resource_filename	file_parser.h	/^	char* resource_filename;$/;"	m	struct:Href_url_tag
+send_receive_socket_data	socket_operations.c	/^void* send_receive_socket_data(int client_socket, char* resource)$/;"	f
+to_visit	file_parser.h	/^	bool to_visit;$/;"	m	struct:Href_url_tag
+validate_url	file_parser.c	/^int validate_url(char* url, Href_url *href_url)$/;"	f
+visit	crawler.h	/^	int visit[100];$/;"	m	struct:Web_crawler_struct
+visited_count	crawler.h	/^	int visited_count;$/;"	m	struct:Web_crawler_struct
+visited_url	crawler.h	/^	char *visited_url[100];$/;"	m	struct:Web_crawler_struct
