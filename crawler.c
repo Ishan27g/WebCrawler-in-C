@@ -48,8 +48,8 @@ int main(int argc, char **argv)
 	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
 	resource = malloc(strlen(argv[1]));
 	original_host = parse_input(argv[1], resource);	
-	printf("\nhost is %s", original_host);
-	printf("\nresource is %s", resource);
+	//printf("\nhost is %s", original_host);
+	//printf("\nresource is %s", resource);
 
 	Web_crawler crawler;
 

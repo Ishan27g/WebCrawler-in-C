@@ -80,7 +80,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	}
 	else
 	{
-		printf("\nSent request :\n[%s]\n",request_str);
+		printf("Sent request");// :\n[%s]\n",request_str);
 	}
 	free(request_str);
         received_file = fopen(HTML_FILE_LOCAL, "w");
