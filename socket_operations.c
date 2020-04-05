@@ -2,6 +2,7 @@
 
 
 extern char* original_host;
+
 int initialise_socket()
 {
 	int client_socket;

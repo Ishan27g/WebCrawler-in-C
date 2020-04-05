@@ -5,12 +5,14 @@
 #include "file_parser.h"
 #include "socket_operations.h"
 char* original_host;
+char *resource;
 
 
 char* parse_input(char* input, char* resource)
 {
 	char *components, *dest_temp;
 	char *host;
+	char *input_string;
 	host = strstr(input,"http://");
 	if(host == NULL)
 	{
@@ -24,10 +26,11 @@ char* parse_input(char* input, char* resource)
 	{
 		//string is in http://name.resource format
 		//char* host not points to name
-		//strcpy(input_string, host+7);
-		components = strtok_r(input+7, "/", &dest_temp);
+		input_string = malloc(strlen(input)-7);
+		strcpy(input_string, input+7);
+		components = strtok_r(input_string, "/", &dest_temp);
 		strcpy(host, components);
-		strcpy(resource, components);
+		strcpy(resource, dest_temp);
 		return host;//components;
 	}
 	return NULL;
@@ -36,38 +39,23 @@ char* parse_input(char* input, char* resource)
 int main(int argc, char **argv)
 {	
 	int client_socket;
-	char *resource;
-	char *host;
-	if(argv[1])
-	{
-		host = malloc(strlen(argv[1]));
-		resource = malloc(strlen(argv[1]));
-	}
-	else
+	if(!argv[1])
 	{
 		printf("\ninvalid input string\n");
-		return NULL;
+		return 0;
 	}
-
-	host = parse_input(argv[1], resource);	
-	printf("\nhost is %s", host);
+	original_host = NULL;
+	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
+	resource = malloc(strlen(argv[1]));
+	original_host = parse_input(argv[1], resource);	
+	printf("\nhost is %s", original_host);
 	printf("\nresource is %s", resource);
 
 	Web_crawler crawler;
 
-	original_host = NULL;
-
-	if(argv[1] == NULL)
-	{
-		printf("\nEnter hostname as 1st arguement\n");
-	}
-	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
-	strcpy(original_host, argv[1]);
-	printf("\nhost is %s\n",original_host);
-
 	client_socket = initialise_socket();
 	
-	send_receive_socket_data(client_socket, NULL);
+	send_receive_socket_data(client_socket, resource);
 
         close(client_socket);
 	
