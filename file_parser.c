@@ -276,6 +276,7 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 
 			if(strstr(full_line, "<a href") != NULL)
 			{
+				fprintf(stderr,"\nchecking url : %s\n",full_line);
 				href_url.to_visit = 0;
 				href_url.to_visit = extract_validate_href(full_line, &href_url);
 				if(href_url.to_visit == 1)
@@ -284,14 +285,16 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 					crawler->visit[crawler->visited_count] = 0;
 					crawler->visited_url[crawler->visited_count] = malloc(strlen(href_url.hostname) + strlen(href_url.resource_filename)+10);
 					sprintf(crawler->visited_url[crawler->visited_count],"http://%s/%s\n",href_url.hostname, href_url.resource_filename);
-					fprintf(stderr,"\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
+					fprintf(stderr,"\n****************************************************************************\n");
+					fprintf(stderr,"\nvalue added to array is :%s\n",crawler->visited_url[crawler->visited_count]);
+					fprintf(stderr,"\n****************************************************************************\n");
 					crawler->visited_count++;
 
 				//	}	
 				}
 				else
 				{
-					fprintf(stderr,"\nvalue not added to array :%s.%s\n",href_url.hostname, href_url.resource_filename);
+					fprintf(stderr,"\nvalue not added to array :%s/%s\n",href_url.hostname, href_url.resource_filename);
 				}
 			}
 		}
