@@ -32,6 +32,7 @@ int count_dots(char* string)
 int fill_constituents(char** constituent, char* url)
 {
 	char *components, *dest_temp;
+	fprintf(stderr, "\nurl is %s\n",url);
 	components = strtok_r(url, ".", &dest_temp);
 	int count=0;
 	do {
@@ -81,7 +82,8 @@ int match_host(Href_url* href_url)
 	
 	strcpy(href_copy, href_url->hostname);
 	strcpy(hostname_copy,original_host);
-	
+
+	fprintf(stderr,"\ncounting components for %s\n", href_copy);
 	int components_host = count_dots(hostname_copy);
 	int components_href = count_dots(href_copy);
 	
