@@ -131,7 +131,7 @@ int match_host(Href_url* href_url)
 	for(i=count-1; i> 0; i--)
 	{
 		if(strcmp(constituents_original_host[i], constituents_href_tag[i]) == 0)
-		x++;
+			x++;
 	}
 	if(x == count-1)
 	{

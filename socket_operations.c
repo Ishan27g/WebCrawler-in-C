@@ -92,7 +92,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	html_content = (char*)malloc(512);
 	memset(html_content,'\0',512);
 
-	fprintf(stderr, "\nreceived header : %s\n",buffer);
 	get_http_header(buffer, &http_head, html_content);
 	
 	fprintf(stderr,"\nhttp header is %s\n", html_content);
