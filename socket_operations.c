@@ -93,7 +93,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	memset(html_content,'\0',512);
 
 	get_http_header(buffer, &http_head, html_content);
-	fprintf(stderr,"\nbuffer is %s\n ",buffer);
+	fprintf(stderr,"\nhtml_content is %s\n ",html_content);
 
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
