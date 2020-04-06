@@ -42,6 +42,7 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 		{
 			memset(dest->http_content_type,'\0',sizeof(dest->http_content_type));
 			strcpy(dest->http_content_type, value);
+			dest->http_content_type[strlen(dest->http_content_type)-1]='\0';
 		}
 		else if(strstr(key,"Content-Length") !=NULL)
 		{
