@@ -11,6 +11,7 @@ int initialise_socket()
         memset(&server_socket, 0, sizeof(server_socket));
 	
         /* Construct the server_socket structure */
+	printf("\noriginal_host is %s\n",original_host);
 	localhost_server = gethostbyname(original_host);
 	if(!localhost_server)
 	{
