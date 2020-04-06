@@ -87,4 +87,3 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 	return NULL;
 
 }
-

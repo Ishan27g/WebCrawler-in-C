@@ -280,10 +280,14 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 					crawler->visit[crawler->visited_count] = 0;
 					crawler->visited_url[crawler->visited_count] = malloc(strlen(href_url.hostname) + strlen(href_url.resource_filename)+10);
 					sprintf(crawler->visited_url[crawler->visited_count],"http://%s/%s\n",href_url.hostname, href_url.resource_filename);
-//					printf("\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
+					fprintf(stderr,"\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
 					crawler->visited_count++;
 
 				//	}	
+				}
+				else
+				{
+					fprintf(stderr,"\nvalue not added to array :%s.%s\n",href_url.hostname, href_url.resource_filename);
 				}
 			}
 		}
