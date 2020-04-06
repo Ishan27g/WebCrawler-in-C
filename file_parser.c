@@ -151,14 +151,19 @@ int validate_url(char* url, Href_url *href_url)
 {
 	char* url_copy =(char*) calloc(strlen(url), sizeof(char));
 	strncpy(url_copy, url, strlen(url));
+	
+	/*
+	 * this returns number of dots, do components actually dots + 1
+	 */
 	int components = count_dots(url);
-	//char* resource_filename = NULL;
-	//char* hostname = NULL;
+	
+	
 	char** constituents;
 
 	constituents = (char**) calloc(components, sizeof(char*));
 
 	fill_constituents(constituents, url_copy);
+	
 	if(components == 0)
 	{
 		/*This means that the url is a relative path*/
@@ -167,22 +172,51 @@ int validate_url(char* url, Href_url *href_url)
 //		or
 		href_url->hostname = NULL;
 		href_url->resource_filename = (char*)calloc(strlen(constituents[components-0]), sizeof(char));
-		strcpy(href_url->resource_filename, constituents[components]);
+		strcpy(href_url->resource_filename, constituents[components-0]);
 	}
 	if(components == 1)
 	{
-		
+		components++;
+		//this means dots were 1, so dot separated components are 2	
+		//comp[0] is host
+		//comp[1] is resource
+		href_url->hostname = (char*) calloc(strlen(constituents[components-2]), sizeof(char));
+		strcpy(href_url->hostname,constituents[components-2]);
+		if((strstr(href_url->hostname,"http://") !=NULL) || (strstr(href_url->hostname,"HTTP://") !=NULL))
+		{
+			strcpy(href_url->hostname, href_url->hostname+7);
+		}
 		href_url->resource_filename = (char*)calloc(strlen(constituents[components-1]), sizeof(char));
 		strcpy(href_url->resource_filename, constituents[components-1]);
-		href_url->hostname = NULL;
 	}
-//	if(components == 2)
-//	{
-//	}
+	if(components == 2)
+	{
+		components++;
+		//this means dots were 2, so dot separated components are 3	
+		//comp[0]/comp[1].. is host
+		//..comp[1]/comp[2] is resource
+		char* host_name = malloc(strlen(constituents[components-2]));
+		strcpy(host_name,constituents[components-2]);
+		char *dst, *dest_temp;
+		dst = strtok_r(host_name, "/", &dest_temp);
+		strcpy(href_url->hostname, dst);
+		free(host_name);
+		host_name = NULL;
+		
+		if((strstr(href_url->hostname,"http://") !=NULL) || (strstr(href_url->hostname,"HTTP://") !=NULL))
+		{
+			strcpy(href_url->hostname, href_url->hostname+7);
+		}
+		int len = strlen(constituents[components-2]) + strlen(constituents[components-1]);
+		href_url->resource_filename = (char*) calloc(len , sizeof(char));
+		strcpy(href_url->resource_filename,get_resource_name(constituents, components));
+		
+
+	}
 	if(components == 3)
 	{
 		href_url->resource_filename = (char*) calloc(strlen(constituents[components-2] + strlen(constituents[components-1])), sizeof(char));
-		href_url->resource_filename = get_resource_name(constituents, components);
+		strcpy(href_url->resource_filename,get_resource_name(constituents, components));
 		href_url->hostname = (char*) calloc(strlen(constituents[0] + strlen(constituents[1])) + 1, sizeof(char));
 		strcat(href_url->hostname,constituents[components-3]);
 		strcat(href_url->hostname,".");
