@@ -2,6 +2,7 @@
 
 
 #include "file_parser.h"
+#define MAX_RESOURCE_LEN 512
 
 extern char* original_host;
 
@@ -49,7 +50,8 @@ int fill_constituents(char** constituent, char* url)
 }
 char* get_resource_name(char** constituent, int count)
 {
-	int new_len = strlen(constituent[count-2]) + strlen(constituent[count-1]);
+	//int new_len = strlen(constituent[count-2]) + strlen(constituent[count-1]);
+	int new_len = MAX_RESOURCE_LEN;
 	char* resource_name;
 	char *dst, *dest_temp;
 	constituent[count-2] = realloc(constituent[count-2], new_len);
@@ -156,8 +158,6 @@ int validate_url(char* url, Href_url *href_url)
 	 * this returns number of dots, do components actually dots + 1
 	 */
 	int components = count_dots(url);
-	
-	
 	char** constituents;
 
 	constituents = (char**) calloc(components, sizeof(char*));
@@ -207,7 +207,8 @@ int validate_url(char* url, Href_url *href_url)
 		{
 			strcpy(href_url->hostname, href_url->hostname+7);
 		}
-		int len = strlen(constituents[components-2]) + strlen(constituents[components-1]);
+		int len = MAX_RESOURCE_LEN;
+		//int len = strlen(constituents[components-2]) + strlen(constituents[components-1]);
 		href_url->resource_filename = (char*) calloc(len , sizeof(char));
 		strcpy(href_url->resource_filename,get_resource_name(constituents, components));
 		
@@ -265,9 +266,13 @@ int validate_url(char* url, Href_url *href_url)
 int extract_validate_href(char* string, Href_url* href_url)
 {
 	char *dest_string, *dest_temp;
-	dest_string = strtok_r(string, "\"", &dest_temp);
+	char* href_start = strstr(string,"<a href=");
+	if(href_start == NULL)
+		href_start = strstr(string,"<A HREF=");
+	printf("\n---------------------------------\nvalidating url %s\n\n",href_start);
+	dest_string = strtok_r(href_start, "\"", &dest_temp);
 	dest_string = strtok_r(NULL, "\"", &dest_temp);
-	//printf("\n---------------------------------\nvalidating url %s",dest_string);
+	printf("\n---------------------------------\n url %s\n\n",dest_string);
 	return validate_url(dest_string, href_url);
 	
 }
