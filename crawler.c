@@ -61,10 +61,8 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	
-	fprintf( stderr,"\n%d\n",__LINE__);
 	send_receive_socket_data(client_socket, resource);
         close(client_socket);
-	fprintf( stderr,"\n%d\n",__LINE__);
 	
 	crawler.visited_count = 0;
 	int i=0;

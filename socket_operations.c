@@ -56,7 +56,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
-		//strcpy(request_str,HTTP_REQ_STR);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
@@ -71,7 +70,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	}
 	n = write(client_socket, request_str, strlen(request_str));
-	//int n = write(client_socket, str, strlen(str));
 	if( n<0)
 	{
 		fprintf( stderr,"\nError in sending request\n");
@@ -94,7 +92,10 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	html_content = (char*)malloc(512);
 	memset(html_content,'\0',512);
 
+	fprintf(stderr, "\nreceived header : %s\n",buffer);
 	get_http_header(buffer, &http_head, html_content);
+	
+	fprintf(stderr,"\nhttp header is %s\n", html_content);
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
 	if(http_head.http_rsp_code)

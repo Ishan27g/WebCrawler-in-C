@@ -64,16 +64,24 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 		printf("\nEmpty pointer passed\n");
 	}
 	char *dest_string, *dest_temp;
-
+	char* string_copy = NULL;
 	dest_string = strtok_r(buffer, "<", &dest_temp);
-	//printf("\nhttp header is %s\n",dest_string);
 	sprintf(html_content, "<%s",dest_temp);
 	dest_temp = NULL;
 	dest_string = strtok_r(dest_string, "\n", &dest_temp);
 	do {
 		if(dest_string != NULL)
 		{
-			fill_http_header(dest_string, dest);
+			string_copy = malloc(strlen(dest_string));
+			if(!string_copy)
+			{
+				fprintf(stderr,"\nmalloc failed\n");
+				return;
+			}
+			strcpy(string_copy, dest_string);
+			fill_http_header(string_copy, dest);
+			if(string_copy)
+				free(string_copy);
 		}
 	} while ((dest_string = strtok_r(NULL, "\n", &dest_temp)) != NULL);
 	return NULL;
