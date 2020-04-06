@@ -41,14 +41,14 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 			dest->http_server = malloc(line_length);
 			memset(dest->http_server,'\0',line_length);
 			dest->http_server = value;
-			//printf("\nServer is %s\n",dest->http_server);
+			printf("\nServer is %s\n",dest->http_server);
 		}
 		else if(strstr(key,"Content-type") !=NULL)
 		{
 			dest->http_content_type = malloc(line_length);
 			memset(dest->http_content_type,'\0',line_length);
 			dest->http_content_type = value;
-			//printf("\ncontent type is %s\n",dest->http_content_type);
+			printf("\ncontent type is %s\n",dest->http_content_type);
 		}
 		else if(strstr(key,"Content-Length") !=NULL)
 			{

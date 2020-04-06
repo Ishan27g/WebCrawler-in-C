@@ -237,10 +237,17 @@ int extract_validate_href(char* string, Href_url* href_url)
 void parse_html_file(char* filename, Web_crawler *crawler)
 {
 	FILE* file = fopen(filename, "r"); /* should check the result */
-	size_t len = 256;
-	char* full_line = (char*) calloc(len*2, sizeof(char));
+	size_t len = 512;
+	char* full_line;
+	
 	
 	Href_url href_url;
+       	full_line = (char*) calloc(len, sizeof(char));
+	if(!full_line)
+	{
+		printf("\nfailed to allocate memory\n");
+		return NULL;
+	}
 
 	if(!file)
 	{
