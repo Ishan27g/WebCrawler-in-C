@@ -59,7 +59,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
 		//strcpy(request_str,HTTP_REQ_STR);
-		sfprintf( stderr,request_str,"GET / %s",HTTP_REQ_STR);
+		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	fprintf( stderr,"\n%d\n",__LINE__);
@@ -70,7 +70,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
-		sfprintf( stderr,request_str,"GET /%s %s",resource, HTTP_REQ_STR);
+		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	fprintf( stderr,"\n%d\n",__LINE__);

@@ -63,8 +63,6 @@ int main(int argc, char **argv)
 	
 	fprintf( stderr,"\n%d\n",__LINE__);
 	send_receive_socket_data(client_socket, resource);
-	fprintf( stderr,"\n%d\n",__LINE__);
-
         close(client_socket);
 	fprintf( stderr,"\n%d\n",__LINE__);
 	
