@@ -53,14 +53,11 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	char* html_content = NULL;
 	int n;
 	Http_header *http_head;
-	http_head = malloc(sizeof(Http_header));
-	
-	html_content = (char*)malloc(512);
-	memset(html_content,'\0',512);
 	if(resource == NULL)
 	{
-		request_str = (char*) malloc(HTTP_REQ_STR_LEN);
-		memset(request_str,'\0',HTTP_REQ_STR_LEN);
+		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
+		request_str = (char*) malloc(len);
+		memset(request_str,'\0',len);
 		//strcpy(request_str,HTTP_REQ_STR);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
@@ -68,9 +65,9 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	}
 	else
 	{
-		//resource[strlen(resource)-1]='\0';
-		request_str = (char*) malloc(HTTP_REQ_STR_LEN + strlen(resource));
-		memset(request_str,'\0',HTTP_REQ_STR_LEN + strlen(resource) + 1);
+		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
+		request_str = (char*) malloc(len);
+		memset(request_str,'\0',len);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		printf("\nSending request :\n[%s]\n",request_str);
@@ -90,6 +87,10 @@ void* send_receive_socket_data(int client_socket, char* resource)
         /* Receiving file size */
 	len = recv(client_socket, buffer, 512, 0);
 	printf("\nResponse message of length: %d\n\n",len);
+	
+	http_head = malloc(sizeof(Http_header));
+	html_content = (char*)malloc(512);
+	memset(html_content,'\0',512);
 
 	get_http_header(buffer, http_head, html_content);
 	/*
