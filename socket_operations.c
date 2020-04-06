@@ -74,7 +74,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		printf("\nSending request :\n[%s]\n",request_str);
-		return NULL;
 	}
 	n = write(client_socket, request_str, strlen(request_str));
 	//int n = write(client_socket, str, strlen(str));
