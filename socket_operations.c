@@ -53,8 +53,10 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	char* html_content = NULL;
 	int n;
 	Http_header *http_head;
+	printf("\n%d\n",__LINE__);
 	if(resource == NULL)
 	{
+	printf("\n%d\n",__LINE__);
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
@@ -62,31 +64,44 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		printf("\nSending request :\n[%s]\n",request_str);
+	printf("\n%d\n",__LINE__);
 	}
 	else
 	{
+	printf("\n%d\n",__LINE__);
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		printf("\nSending request :\n[%s]\n",request_str);
+	printf("\n%d\n",__LINE__);
 	}
+	printf("\n%d\n",__LINE__);
 	n = write(client_socket, request_str, strlen(request_str));
+	printf("\n%d\n",__LINE__);
 	//int n = write(client_socket, str, strlen(str));
 	if( n<0)
 	{
+	printf("\n%d\n",__LINE__);
 		printf("\nError in sending request\n");
+	printf("\n%d\n",__LINE__);
 	}
 	else
 	{
+	printf("\n%d\n",__LINE__);
 		printf("\nSent request\n\n %s\n", request_str);
+	printf("\n%d\n",__LINE__);
 		// :\n[%s]\n",request_str);
 	}
+	printf("\n%d\n",__LINE__);
 	free(request_str);
+	printf("\n%d\n",__LINE__);
         /* Receiving file size */
 	len = recv(client_socket, buffer, 512, 0);
+	printf("\n%d\n",__LINE__);
 	printf("\nResponse message of length: %d\n\n",len);
+	printf("\n%d\n",__LINE__);
 	
 	http_head = malloc(sizeof(Http_header));
 	html_content = (char*)malloc(512);
@@ -96,7 +111,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
-	if(strcmp(http_head->http_content_type, "text/html") == NULL)
+	if(strcmp(http_head->http_content_type, "text/html") != 0)
 	{
 		printf("\nContent type is not text/html\n");
 		return NULL;

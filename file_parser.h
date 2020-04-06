@@ -8,5 +8,5 @@ typedef struct Href_url_tag{
 	bool to_visit;
 }Href_url;
 
-void parse_html_file(char* filename, Web_crawler *crawler);
+void* parse_html_file(char* filename, Web_crawler *crawler);
 #endif

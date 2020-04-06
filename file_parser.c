@@ -234,7 +234,7 @@ int extract_validate_href(char* string, Href_url* href_url)
 }
 
 
-void parse_html_file(char* filename, Web_crawler *crawler)
+void* parse_html_file(char* filename, Web_crawler *crawler)
 {
 	FILE* file = fopen(filename, "r"); /* should check the result */
 	size_t len = 512;
