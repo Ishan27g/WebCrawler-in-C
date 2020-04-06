@@ -93,7 +93,8 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	memset(html_content,'\0',512);
 
 	get_http_header(buffer, &http_head, html_content);
-	
+	fprintf(stderr,"\nbuffer is %s\n ",buffer);
+
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
 	if(http_head.http_rsp_code)
@@ -122,6 +123,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 	while(len > 0){
 		len = recv(client_socket, buffer, 512, 0);
+		fprintf(stderr,"\nbuffer is %s\n ",buffer);
                 fwrite(buffer, sizeof(char), len, received_file);
 	}
         fclose(received_file);
