@@ -121,7 +121,8 @@ int match_host(Href_url* href_url)
 	{	
 		//printf("\nconstituent tag [%d] is %s\t",i,constituents_href_tag[i]);
 	}
-	int count = components_host == components_href? components_host: components_href;
+	int count = components_host > components_href? components_href: components_host;
+	//int count = components_host == components_href? components_host: components_href;
 
 	int x;
 
@@ -279,7 +280,7 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 					crawler->visit[crawler->visited_count] = 0;
 					crawler->visited_url[crawler->visited_count] = malloc(strlen(href_url.hostname) + strlen(href_url.resource_filename)+10);
 					sprintf(crawler->visited_url[crawler->visited_count],"http://%s/%s\n",href_url.hostname, href_url.resource_filename);
-					printf("\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
+//					printf("\nvalue adding to array is :%s\n",crawler->visited_url[crawler->visited_count]);
 					crawler->visited_count++;
 
 				//	}	
