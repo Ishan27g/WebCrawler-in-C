@@ -50,11 +50,9 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	char buffer[BUFSIZ];
 	char* html_content = NULL;
 	int n;
-	Http_header *http_head;
-	fprintf( stderr,"\n%d\n",__LINE__);
+	Http_header http_head;
 	if(resource == NULL)
 	{
-	fprintf( stderr,"\n%d\n",__LINE__);
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
@@ -62,59 +60,54 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
-	fprintf( stderr,"\n%d\n",__LINE__);
 	}
 	else
 	{
-	fprintf( stderr,"\n%d\n",__LINE__);
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
 		request_str = (char*) malloc(len);
 		memset(request_str,'\0',len);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
-	fprintf( stderr,"\n%d\n",__LINE__);
 	}
-	fprintf( stderr,"\n%d\n",__LINE__);
 	n = write(client_socket, request_str, strlen(request_str));
-	fprintf( stderr,"\n%d\n",__LINE__);
 	//int n = write(client_socket, str, strlen(str));
 	if( n<0)
 	{
-	fprintf( stderr,"\n%d\n",__LINE__);
 		fprintf( stderr,"\nError in sending request\n");
-	fprintf( stderr,"\n%d\n",__LINE__);
 	}
 	else
 	{
-	fprintf( stderr,"\n%d\n",__LINE__);
 		fprintf( stderr,"\nSent request\n\n %s\n", request_str);
-	fprintf( stderr,"\n%d\n",__LINE__);
-		// :\n[%s]\n",request_str);
 	}
-	fprintf( stderr,"\n%d\n",__LINE__);
 	free(request_str);
-	fprintf( stderr,"\n%d\n",__LINE__);
         /* Receiving file size */
 	len = recv(client_socket, buffer, 512, 0);
-	fprintf( stderr,"\n%d\n",__LINE__);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
-	fprintf( stderr,"\n%d\n",__LINE__);
 	
-	http_head = malloc(sizeof(Http_header));
+	//http_head = malloc(sizeof(Http_header) + 512);
 	html_content = (char*)malloc(512);
 	memset(html_content,'\0',512);
 
-	get_http_header(buffer, http_head, html_content);
+	get_http_header(buffer, &http_head, html_content);
+	if(http_head.http_version)
+		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
+	if(http_head.http_rsp_code)
+		fprintf(stderr,"\ncode is %s\n",http_head.http_rsp_code);
+	if(http_head.http_server)
+		fprintf(stderr,"\nServer is %s\n",http_head.http_server);
+	if(http_head.http_content_type)
+		fprintf(stderr,"\ncontent type is %s\n",http_head.http_content_type);
+	
+	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
-	if(strcmp(http_head->http_content_type, "text/html") != 0)
+	if(strcmp(http_head.http_content_type, "text/html") != 0)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return NULL;
 	}
-        fprintf( stderr,"\nhttp_content_length is %d\n",http_head->http_content_length);
 	received_file = fopen(HTML_FILE_LOCAL, "w");
         if (received_file == NULL)
         {

@@ -18,14 +18,11 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 
 	if(strstr(key,"HTTP") != NULL)
 	{
-		dest->http_version = malloc(4);
-		memset(dest->http_version,'\0',4);
-		dest->http_version = strtok_r(key, " ", &tmp2);
-		//printf("\nversion is %s\n",dest->http_version);
-		dest->http_rsp_code = malloc(line_length - strlen(dest->http_version));
-		memset(dest->http_rsp_code,'\0',line_length - strlen(dest->http_version));
-		dest->http_rsp_code = tmp2;
-		printf("\ncode is %s\n",dest->http_rsp_code);
+		//dest->http_version = malloc(4);
+		memset(dest->http_version,'\0',sizeof(dest->http_version));
+		memset(dest->http_rsp_code,'\0',sizeof(dest->http_version));
+		strcpy(dest->http_version,strtok_r(key, " ", &tmp2));
+		strcpy(dest->http_rsp_code, tmp2);
 	}
 	else
 	{
@@ -38,22 +35,17 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 
 		if(strstr(key,"Server") !=NULL)
 		{
-			dest->http_server = malloc(line_length);
-			memset(dest->http_server,'\0',line_length);
-			dest->http_server = value;
-			printf("\nServer is %s\n",dest->http_server);
+			memset(dest->http_server,'\0',sizeof(dest->http_server));
+			strcpy(dest->http_server, value);
 		}
 		else if(strstr(key,"Content-type") !=NULL)
 		{
-			dest->http_content_type = malloc(line_length);
-			memset(dest->http_content_type,'\0',line_length);
-			dest->http_content_type = value;
-			printf("\ncontent type is %s\n",dest->http_content_type);
+			memset(dest->http_content_type,'\0',sizeof(dest->http_content_type));
+			strcpy(dest->http_content_type, value);
 		}
 		else if(strstr(key,"Content-Length") !=NULL)
-			{
+		{
 			dest->http_content_length = atoi(value);
-			printf("\ncontent length is %d\n",dest->http_content_length);
 		}
 		else
 		{
