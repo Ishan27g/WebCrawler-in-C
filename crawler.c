@@ -55,6 +55,11 @@ int main(int argc, char **argv)
 	Web_crawler crawler;
 
 	client_socket = initialise_socket();
+	if(client_socket == 0)
+	{
+		printf("\nsocket not initialised\n");
+		return 0;
+	}
 	
 	send_receive_socket_data(client_socket, resource);
 
