@@ -46,20 +46,15 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	original_host = NULL;
-	fprintf( stderr,"\n%d\n",__LINE__);
 	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
-	fprintf( stderr,"\n%d\n",__LINE__);
 	resource = malloc(strlen(argv[1]));
 	original_host = parse_input(argv[1], resource);	
-	fprintf( stderr,"\n%d\n",__LINE__);
 	fprintf( stderr,"\nhost is %s\n", original_host);
 	fprintf( stderr,"\nresource is %s\n", resource);
 
-	fprintf( stderr,"\n%d\n",__LINE__);
 	Web_crawler crawler;
 
 	client_socket = initialise_socket();
-	fprintf( stderr,"\n%d\n",__LINE__);
 	if(client_socket == 0)
 	{
 		fprintf( stderr,"\nsocket not initialised\n");
