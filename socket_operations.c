@@ -94,7 +94,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 
 	get_http_header(buffer, &http_head, html_content);
 	
-	fprintf(stderr,"\nhttp header is %s\n", html_content);
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
 	if(http_head.http_rsp_code)
