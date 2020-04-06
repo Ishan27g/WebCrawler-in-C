@@ -9,7 +9,8 @@
 
 all: crawler.c http_headers.c file_parser.c socket_operations.c
 	gcc -Wall -o crawler crawler.c http_headers.c file_parser.c socket_operations.c -g 
-    
+local:
+	gcc -Wall -o crawler crawler.c http_headers.c file_parser.c socket_operations.c -g -DVM_DEBUG_ON
 clean: 
 	rm crawler
 

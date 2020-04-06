@@ -115,12 +115,12 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
-	if(strcmp(http_head.http_content_type, " text/html") != 0)
+/*	if(strcmp(http_head.http_content_type, " text/html") != 0)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return NULL;
 	}
-
+*/
 	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 	while(len > 0){
 		len = recv(client_socket, buffer, 512, 0);
