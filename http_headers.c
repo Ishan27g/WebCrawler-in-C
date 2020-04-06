@@ -38,7 +38,7 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 			memset(dest->http_server,'\0',sizeof(dest->http_server));
 			strcpy(dest->http_server, value);
 		}
-		else if(strstr(key,"Content-type") !=NULL)
+		else if(strstr(key,"Content-Type") !=NULL)
 		{
 			memset(dest->http_content_type,'\0',sizeof(dest->http_content_type));
 			strcpy(dest->http_content_type, value);
