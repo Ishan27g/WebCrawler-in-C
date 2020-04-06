@@ -71,7 +71,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		//resource[strlen(resource)-1]='\0';
 		request_str = (char*) malloc(HTTP_REQ_STR_LEN + strlen(resource));
 		memset(request_str,'\0',HTTP_REQ_STR_LEN + strlen(resource) + 1);
-		sprintf(request_str,"GET %s %s",resource, HTTP_REQ_STR);
+		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 		printf("\nSending request :\n[%s]\n",request_str);
 		return NULL;
