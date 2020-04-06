@@ -42,36 +42,36 @@ int main(int argc, char **argv)
 	int client_socket;
 	if(!argv[1])
 	{
-		printf("\ninvalid input string\n");
+		fprintf( stderr,"\ninvalid input string\n");
 		return 0;
 	}
 	original_host = NULL;
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	resource = malloc(strlen(argv[1]));
 	original_host = parse_input(argv[1], resource);	
-	printf("\n%d\n",__LINE__);
-	printf("\nhost is %s\n", original_host);
-	printf("\nresource is %s\n", resource);
+	fprintf( stderr,"\n%d\n",__LINE__);
+	fprintf( stderr,"\nhost is %s\n", original_host);
+	fprintf( stderr,"\nresource is %s\n", resource);
 
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	Web_crawler crawler;
 
 	client_socket = initialise_socket();
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	if(client_socket == 0)
 	{
-		printf("\nsocket not initialised\n");
+		fprintf( stderr,"\nsocket not initialised\n");
 		return 0;
 	}
 	
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	send_receive_socket_data(client_socket, resource);
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 
         close(client_socket);
-	printf("\n%d\n",__LINE__);
+	fprintf( stderr,"\n%d\n",__LINE__);
 	
 	crawler.visited_count = 0;
 	int i=0;
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	/*
 	for(i=0;i<1;i++)
 	{
-		printf("\nsend request for %s\n",crawler.visited_url[i]);
+		fprintf( stderr,"\nsend request for %s\n",crawler.visited_url[i]);
 		//add following as task to the threadpool
 		//	send req
 
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 	}
 */
 
-	printf("\nUrls visited - %d\n",crawler.visited_count);
+	fprintf( stderr,"\nUrls visited - %d\n",crawler.visited_count);
 	
 	return 0;
 }
