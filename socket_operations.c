@@ -79,6 +79,13 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		fprintf( stderr,"\nSent request\n\n %s\n", request_str);
 	}
 	free(request_str);
+	
+	received_file = fopen(HTML_FILE_LOCAL, "w");
+        if (received_file == NULL)
+        {
+		fprintf( stderr,"Failed to open local file");
+		return NULL;
+        }
         /* Receiving file size */
 	len = recv(client_socket, buffer, 512, 0);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
@@ -102,7 +109,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_server)
 		fprintf(stderr,"\nServer is %s\n",http_head.http_server);
 	if(http_head.http_content_type)
-		fprintf(stderr,"\ncontent type is %s\n",http_head.http_content_type);
+		fprintf(stderr,"\ncontent type is [%s]\n",http_head.http_content_type);
 	
 	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
 	/*
@@ -113,12 +120,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return NULL;
 	}
-	received_file = fopen(HTML_FILE_LOCAL, "w");
-        if (received_file == NULL)
-        {
-		fprintf( stderr,"Failed to open local file");
-		return NULL;
-        }
 
 	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 	while(len > 0){
