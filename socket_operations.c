@@ -111,7 +111,10 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]\n",http_head.http_content_type);
 	
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
+	fprintf(stderr,"\ncontent is %s\n",html_content);
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
