@@ -3,8 +3,8 @@
 #define HTTP_HDRS_H
 #include "crawler.h"
 typedef struct Http_rsp_headers{
-	char http_version[10];
-	char http_rsp_code[10];
+	char http_version[50];
+	char http_rsp_code[50];
 	char http_server[512];
 	char http_content_type[50];
 	int http_content_length;

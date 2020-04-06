@@ -86,6 +86,11 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
 	//http_head = malloc(sizeof(Http_header) + 512);
+	//
+	memset(http_head.http_version,'\0',sizeof(http_head.http_version));
+	memset(http_head.http_rsp_code,'\0',sizeof(http_head.http_rsp_code));
+	memset(http_head.http_server,'\0',sizeof(http_head.http_server));
+	memset(http_head.http_content_type,'\0',sizeof(http_head.http_content_type));
 	html_content = (char*)malloc(512);
 	memset(html_content,'\0',512);
 
