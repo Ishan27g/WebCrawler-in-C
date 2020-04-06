@@ -115,16 +115,18 @@ int match_host(Href_url* href_url)
 	int i=0;
 	for(i=0; i<components_host; i++)
 	{	
-		//printf("\nconstituent host [%d] is %s\t",i,constituents_original_host[i]);
+		fprintf(stderr,"\noriginal host [%d] is %s\n",i,constituents_original_host[i]);
 	}
 	for(i=0; i<components_href; i++)
 	{	
-		//printf("\nconstituent tag [%d] is %s\t",i,constituents_href_tag[i]);
+		fprintf(stderr,"\n tag host [%d] is %s\n",i,constituents_href_tag[i]);
 	}
 	int count = components_host > components_href? components_href: components_host;
 	//int count = components_host == components_href? components_host: components_href;
 
 	int x;
+	fprintf(stderr,"\ncomponents_host %d, components_href %d, count = %d\n",components_host, components_href, count);
+
 
 	for(i=count-1; i> 0; i--)
 	{
