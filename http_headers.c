@@ -8,13 +8,11 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 	}
 	char *key, *value, *tmp;
 	char* tmp2 = NULL;
-	int line_length = 0;
 	key = strtok_r(dest_string, ":", &tmp);
 	if(key == NULL)
 	{
 		return NULL;
 	}
-	line_length = strlen(key);
 
 	if(strstr(key,"HTTP") != NULL)
 	{
@@ -31,7 +29,6 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 			return NULL;	
 		}
 		value = strtok_r(NULL, ":", &tmp);
-		line_length = strlen(value);
 
 		if(strstr(key,"Server") !=NULL)
 		{
