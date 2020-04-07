@@ -321,7 +321,10 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 			{
 				href_url.to_visit = 0;
 				fprintf(stderr,"\nchecking url : %s\n",full_line+6);
-				href_url.to_visit = extract_validate_href(full_line+ 6, &href_url);
+				char *copy = malloc(strlen(full_line));
+				strcpy(copy, full_line);
+				href_url.to_visit = extract_validate_href(copy, &href_url);
+				free(copy);
 				if(href_url.to_visit == 1)
 				{
 					//add this to the queue
