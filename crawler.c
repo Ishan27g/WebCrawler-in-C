@@ -28,10 +28,11 @@ char* parse_input(char* input, char* resource)
 		//string is in http://name.resource format
 		//char* host not points to name
 		input_string = malloc(strlen(input)-7);
-		strcpy(input_string, input+7);
+		strncpy(input_string, input+7, strlen(input)-7);
 		components = strtok_r(input_string, "/", &dest_temp);
-		strcpy(host, components);
-		strcpy(resource, dest_temp);
+		strncpy(host, components, strlen(components));
+		strncpy(resource, dest_temp, strlen(dest_temp));;
+		free(input_string);
 		return host;//components;
 	}
 	return NULL;
@@ -45,13 +46,15 @@ int main(int argc, char **argv)
 		fprintf( stderr,"\ninvalid input string\n");
 		return 0;
 	}
+	int len = strlen(argv[1]);
 	original_host = NULL;
-	original_host = (char*) calloc(strlen(argv[1]), sizeof(char));
-	resource = malloc(strlen(argv[1]));
+	original_host = malloc(len);
+	resource = malloc(len);
 	original_host = parse_input(argv[1], resource);	
 	fprintf( stderr,"\nhost is %s\n", original_host);
 	fprintf( stderr,"\nresource is %s\n", resource);
-
+}
+#if 0
 	Web_crawler crawler;
 
 	client_socket = initialise_socket();
@@ -91,6 +94,9 @@ int main(int argc, char **argv)
 	}
 
 	fprintf( stderr,"\nUrls visited - %d\n",crawler.visited_count);
-	
+	free(original_host);
+	free(resource);
+
 	return 0;
 }
+#endif
