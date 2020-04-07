@@ -44,7 +44,7 @@ int initialise_socket()
 }
 void* send_receive_socket_data(int client_socket, char* resource)
 {
-	char *request_str = NULL;
+	char request_str[512];
         int len;
         FILE *received_file;
 	char buffer[BUFSIZ];
@@ -54,8 +54,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	if(resource == NULL)
 	{
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
-		request_str = (char*) malloc(len);
-		memset(request_str,'\0',len);
+		memset(request_str,'\0',512);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
@@ -63,8 +62,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	else
 	{
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
-		request_str = (char*) malloc(len);
-		memset(request_str,'\0',len);
+		memset(request_str,'\0',512);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
@@ -78,7 +76,6 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	{
 		fprintf( stderr,"\nSent request\n\n %s\n", request_str);
 	}
-	free(request_str);
 	
 	received_file = fopen(HTML_FILE_LOCAL, "w");
         if (received_file == NULL)
@@ -130,6 +127,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 		fprintf(stderr,"\n %s\n ",buffer);
                 fwrite(buffer, sizeof(char), len, received_file);
 	}
+	free(html_content);
         fclose(received_file);
 	return NULL;
 }

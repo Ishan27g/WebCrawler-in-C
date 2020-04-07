@@ -53,8 +53,6 @@ int main(int argc, char **argv)
 	original_host = parse_input(argv[1], resource);	
 	fprintf( stderr,"\nhost is %s\n", original_host);
 	fprintf( stderr,"\nresource is %s\n", resource);
-}
-#if 0
 	Web_crawler crawler;
 
 	client_socket = initialise_socket();
@@ -66,7 +64,10 @@ int main(int argc, char **argv)
 	
 	send_receive_socket_data(client_socket, resource);
         close(client_socket);
-	
+
+
+
+#if 0
 	crawler.visited_count = 0;
 	int i=0;
 	for(i=0;i<100;i++)
