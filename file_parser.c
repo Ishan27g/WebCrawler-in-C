@@ -317,11 +317,19 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 			  <a    href  =   '/'>link</a>
 			 */
 
-			if(strstr(full_line, "<a href") != NULL)
+			if((strstr(full_line, "<a href") != NULL) || (strstr(full_line, "HREF") != NULL)) 
 			{
-				fprintf(stderr,"\nchecking url : %s\n",full_line);
 				href_url.to_visit = 0;
+				if(strstr(full_line, "http://") != NULL)
+				{
+				fprintf(stderr,"\nchecking url : %s\n",full_line+6);
+				href_url.to_visit = extract_validate_href(full_line+ 6, &href_url);
+				}
+				else
+				{
+				fprintf(stderr,"\nchecking url : %s\n",full_line);
 				href_url.to_visit = extract_validate_href(full_line, &href_url);
+				}
 				if(href_url.to_visit == 1)
 				{
 					//add this to the queue
