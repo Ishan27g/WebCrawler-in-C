@@ -33,7 +33,7 @@ int count_dots(char* string)
 int fill_constituents(char** constituent, char* url)
 {
 	char *components, *dest_temp;
-	fprintf(stderr, "\nurl is %s\n",url);
+	fprintf(stderr, "\nok - url is %s\n",url);
 	components = strtok_r(url, ".", &dest_temp);
 	int count=0;
 	do {
@@ -159,9 +159,10 @@ int validate_url(char* url, Href_url *href_url)
 	 */
 	int components = count_dots(url);
 	char** constituents;
+	fprintf(stderr,"\ncomponents are %d\n",components);
 
 	constituents = (char**) calloc(components, sizeof(char*));
-
+	fprintf(stderr,"\nfilling constituents\n");
 	fill_constituents(constituents, url_copy);
 	
 	if(components == 0)
@@ -320,7 +321,7 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 			if((strstr(full_line, "<a href") != NULL) || (strstr(full_line, "HREF") != NULL)) 
 			{
 				href_url.to_visit = 0;
-				fprintf(stderr,"\nchecking url : %s\n",full_line+6);
+				fprintf(stderr,"\nchecking url : %s\n",full_line);
 				char *copy = malloc(strlen(full_line));
 				strcpy(copy, full_line);
 				href_url.to_visit = extract_validate_href(copy, &href_url);
