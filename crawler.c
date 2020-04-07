@@ -71,7 +71,9 @@ int main(int argc, char **argv)
 		crawler.visit[i] = 0;
 		crawler.visited_url[i] = NULL;
 	}
+
 	parse_html_file(HTML_FILE_LOCAL, &crawler);
+
 	for(i=0;i< crawler.visited_count;i++)
 	{
 		fprintf( stderr,"\nTo send request for %s\n",crawler.visited_url[i]);

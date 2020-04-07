@@ -34,6 +34,10 @@ int fill_constituents(char** constituent, char* url)
 {
 	char *components, *dest_temp;
 	fprintf(stderr, "\nok - url is %s\n",url);
+	if((strstr(url,"http://") != NULL) || (strstr(url,"HTTP://") !=NULL))
+		strcpy(url, url+7);
+
+	fprintf(stderr, "\nok - url is %s\n",url);
 	components = strtok_r(url, ".", &dest_temp);
 	int count=0;
 	do {
@@ -88,9 +92,6 @@ int match_host(Href_url* href_url)
 	fprintf(stderr,"\ncounting components for %s\n", href_copy);
 	int components_host = count_dots(hostname_copy);
 	int components_href = count_dots(href_copy);
-	
-	strcpy(href_copy, href_url->hostname);
-	strcpy(hostname_copy,original_host);
 	
 	constituents_href_tag = (char**) calloc(components_href, sizeof(char*));
 	constituents_original_host = (char**) calloc(components_host, sizeof(char*));
@@ -161,7 +162,7 @@ int validate_url(char* url, Href_url *href_url)
 	char** constituents;
 	fprintf(stderr,"\ncomponents are %d\n",components);
 
-	constituents = (char**) calloc(components, sizeof(char*));
+	constituents = (char**) calloc(components * sizeof(char), sizeof(char*));
 	fprintf(stderr,"\nfilling constituents\n");
 	fill_constituents(constituents, url_copy);
 	
@@ -277,8 +278,8 @@ int extract_validate_href(char* string, Href_url* href_url)
 	fprintf(stderr,"\n---------------------------------\nvalidating url %s\n\n",href_start);
 	dest_string = strtok_r(href_start, "\"", &dest_temp);
 	dest_string = strtok_r(NULL, "\"", &dest_temp);
-	fprintf(stderr,"\n---------------------------------\n url %s\n\n",dest_string);
-	return validate_url(dest_string, href_url);
+	fprintf(stderr,"\n---------------------------------\n href is %s\n\n",dest_string);
+//	return validate_url(dest_string, href_url);
 	
 }
 
@@ -287,15 +288,10 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 {
 	FILE* file = fopen(filename, "r"); /* should check the result */
 	size_t len = 512;
-	char* full_line;
+	char full_line[len];
+	char copy[len];
 	
 	Href_url href_url;
-       	full_line = (char*) calloc(len, sizeof(char));
-	if(!full_line)
-	{
-		printf("\nfailed to allocate memory\n");
-		return NULL;
-	}
 
 	if(!file)
 	{
@@ -321,11 +317,10 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 			if((strstr(full_line, "<a href") != NULL) || (strstr(full_line, "HREF") != NULL)) 
 			{
 				href_url.to_visit = 0;
-				fprintf(stderr,"\nchecking url : %s\n",full_line);
-				char *copy = malloc(strlen(full_line));
 				strcpy(copy, full_line);
+				fprintf(stderr,"\nchecking url : %s\n",copy);
 				href_url.to_visit = extract_validate_href(copy, &href_url);
-				free(copy);
+/*
 				if(href_url.to_visit == 1)
 				{
 					//add this to the queue
@@ -342,7 +337,9 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 				else
 				{
 					fprintf(stderr,"\nvalue not added to array :%s/%s\n",href_url.hostname, href_url.resource_filename);
+				
 				}
+				*/
 			}
 		}
 	}
