@@ -89,6 +89,8 @@ void* extract(char* source_string, Href_url* href_url_element)
 	if(dots == 1)
 	{
 		/*it is a relative resource file*/
+
+		//VALIDATE URL------------- BEFORE ADDING
 		strncpy(href_url_element->resource_filename, components, strlen(components));
 	}
 	if(dots == 2)
@@ -97,6 +99,9 @@ void* extract(char* source_string, Href_url* href_url_element)
 		 * component 1 and 2 are host
 		 * component 3 is resource file
 		 */
+
+
+		//VALIDATE URL------------- BEFORE ADDING
 		components = strtok_r(source_string_copy, "/", &dest_temp);
 		strncpy(href_url_element->hostname, components, strlen(components));
 		components = strtok_r(NULL, "", &dest_temp);
@@ -217,7 +222,7 @@ int read_file(char* filename, Web_crawler* crawler_obj)
 	char full_line[len];
 	char full_line_copy[len];
 	char copy[len];
-	int index = 0;
+	int index = crawler_obj->href_url_count;
 
 	//sscanf( dtm, "%s %s %d  %d", weekday, month, &day, &year );
 
@@ -271,15 +276,29 @@ int main()
 	{	
 		memset(crawler.href_url[i].resource_filename,'\0',sizeof(crawler.href_url[i].resource_filename));
 		memset(crawler.href_url[i].hostname,'\0',sizeof(crawler.href_url[i].hostname));
+
+
+		//use this somewhere ?????
 		crawler.href_url[i].to_visit = false;
 	}
-	
+//while this count is less than 100	
 	href_count = read_file("local_html_file.html", &crawler);
+
+	//now file is useles, valid content copied to crawler_obj, can delete
 	
 	for(i=0;i<href_count;i++)
 	{
 		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
 		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
+		//send req_ recieve_file_num_x
+		//read_file() , this will start crawler_obj at index = href_count
+		//adding new url to next index
+		//and updating href_count as well as for loop 
+		//
+		//handling for mime type- text/html
+		//handling for response codes
+		//
+		//delete the files also, can add file pointer variable to crawler_obj
 	}
 	printf("\nhref_count %d\n",href_count);
 	
