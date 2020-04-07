@@ -72,22 +72,21 @@ int main(int argc, char **argv)
 		crawler.visited_url[i] = NULL;
 	}
 	parse_html_file(HTML_FILE_LOCAL, &crawler);
-	/*
-	for(i=0;i<1;i++)
+	for(i=0;i< crawler.visited_count;i++)
 	{
-		fprintf( stderr,"\nsend request for %s\n",crawler.visited_url[i]);
+		fprintf( stderr,"\nTo send request for %s\n",crawler.visited_url[i]);
 		//add following as task to the threadpool
 		//	send req
-
+/*
 		client_socket = initialise_socket();
 		send_receive_socket_data(client_socket,crawler.visited_url[i]);
 		close(client_socket);
+*/
 		//	on valid response, mark crawler.visit[i] = 1
 		//	create file
 		//	parse valid urls
 		//	add urls to crawler
 	}
-*/
 
 	fprintf( stderr,"\nUrls visited - %d\n",crawler.visited_count);
 	

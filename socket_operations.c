@@ -127,7 +127,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 	while(len > 0){
 		len = recv(client_socket, buffer, 512, 0);
-//		fprintf(stderr,"\nbuffer is %s\n ",buffer);
+		fprintf(stderr,"\n %s\n ",buffer);
                 fwrite(buffer, sizeof(char), len, received_file);
 	}
         fclose(received_file);
