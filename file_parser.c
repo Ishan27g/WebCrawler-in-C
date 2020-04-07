@@ -343,7 +343,6 @@ void* parse_html_file(char* filename, Web_crawler *crawler)
 			}
 		}
 	}
-	free(full_line);
 	fclose(file);
 	return NULL;
 }
