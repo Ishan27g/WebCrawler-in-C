@@ -269,6 +269,10 @@ int extract_validate_href(char* string, Href_url* href_url)
 	char* href_start = strstr(string,"<a href=");
 	if(href_start == NULL)
 		href_start = strstr(string,"<A HREF=");
+	if(href_start == NULL)
+		href_start = strstr(string,"HREF=");
+	if(href_start == NULL)
+		href_start = strstr(string,"href=");
 	fprintf(stderr,"\n---------------------------------\nvalidating url %s\n\n",href_start);
 	dest_string = strtok_r(href_start, "\"", &dest_temp);
 	dest_string = strtok_r(NULL, "\"", &dest_temp);
