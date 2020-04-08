@@ -143,7 +143,8 @@ bool extract(char* source_string, Href_url* href_url_element)
 		}
 		strncpy(href_url_element->hostname, components, strlen(components));
 		components = strtok_r(NULL, "", &dest_temp);
-		strncpy(href_url_element->resource_filename, components, strlen(components));
+		strcpy(href_url_element->resource_filename, components);
+		//strncpy(href_url_element->resource_filename, components, strlen(components));
 		free_ptr(source_string_copy);
 		free_ptr(source_string_copy_dots);
 		ret = lookup_duplicate_page(href_url_element->resource_filename);
