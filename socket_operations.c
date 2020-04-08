@@ -134,7 +134,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
-	if(strstr(http_head.http_content_type, "text/html") != NULL)
+	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) != NULL)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return 0;

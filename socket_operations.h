@@ -3,6 +3,8 @@
 
 #include "crawler.h"
 #include "http_headers.h"
+
+#define MIME_TYPE_TEXT_HTML "text/html"
 int send_receive_socket_data(int client_socket, char* resource);
 int initialise_socket(char* host);
 
