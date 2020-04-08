@@ -84,20 +84,24 @@ bool extract(char* source_string, Href_url* href_url_element)
 	source_string_copy_dots = (char*) malloc(strlen(source_string));
 	source_string_copy = (char*) malloc(strlen(source_string));
 	
-	//jump string pointer to point to start of url
+	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
-	//tokenise with 1st quotation char
-	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
-	strcpy(source_string_copy, components);
-	fprintf(stderr,"\nbefore copying %s\n",source_string_copy);
-
-	if(strlen(source_string_copy) == 0)
+	
+	fprintf(stderr,"\nto extract %s\n",source_string);
+		
+	components = strstr(source_string_copy, "\"//");
+	if(components)
 	{
-		components = strstr(source_string, "\"//");
-		strcpy(source_string_copy, components+1);
+		strcpy(source_string_copy, components + 3);
 		fprintf(stderr,"\ncopied %s\n",source_string_copy);
 	}
-
+	else
+	{
+		components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
+		strcpy(source_string_copy, components);
+	}
+	//jump string pointer to point to start of url
+	//tokenise with 1st quotation char
 	int ret = 0;	
 	int dots = count_dots(components);
 	
