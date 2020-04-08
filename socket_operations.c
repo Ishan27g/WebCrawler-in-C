@@ -17,8 +17,11 @@ int initialise_socket(char* crawling_host)
 	}
 	else
 	{
-		fprintf(stderr,"\nfrom host %s, crawling url at host %s\n", original_host, crawling_host);
+#ifdef VM_DEBUG_ON
+		localhost_server = gethostbyname("localhost");
+#else
 		localhost_server = gethostbyname(crawling_host);
+#endif
 	}
 	if(!localhost_server)
 	{
@@ -55,7 +58,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	int len;
         FILE *received_file;
 	char buffer[BUFSIZ];
-	char* html_content = NULL;
+	char html_content[BUFSIZ];
 	int n;
 	Http_header http_head;
 	if(resource == NULL)
@@ -100,9 +103,10 @@ int send_receive_socket_data(int client_socket, char* resource)
 	memset(http_head.http_server,'\0',sizeof(http_head.http_server));
 	memset(http_head.http_content_type,'\0',sizeof(http_head.http_content_type));
 	http_head.http_content_length = 0;
-	html_content = calloc(len, sizeof(char));
+	
+	memset(html_content,'\0',BUFSIZ);
 
-	get_http_header(buffer, &http_head, html_content);
+	get_http_header(buffer, &http_head, &html_content[0]);
 	fprintf(stderr,"\nhtml content is \n%s\n",html_content);
 	
 	int data_received = len;
@@ -128,11 +132,13 @@ int send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 	
+#ifndef VM_DEBUG_ON
 	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return 0;
 	}
+#endif
 
 	if(strlen(html_content) > 0)
 	{
@@ -142,7 +148,6 @@ int send_receive_socket_data(int client_socket, char* resource)
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
-	free(html_content);
         fclose(received_file);
 	return 1;
 }

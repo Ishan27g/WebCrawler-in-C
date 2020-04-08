@@ -129,8 +129,11 @@ bool extract(char* source_string, Href_url* href_url_element)
 		//VALIDATE Hostname------------- BEFORE ADDING
 		components = strtok_r(source_string_copy, "/", &dest_temp);
 
-		
+#ifdef VM_DEBUG_ON
+		ret = 1;
+#else	
 		ret = match_host(components);
+#endif
 		if(ret == 0)
 		{
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
