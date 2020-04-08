@@ -142,14 +142,13 @@ int send_receive_socket_data(int client_socket, char* resource)
 
 	if(strlen(html_content) > 0)
 	{
-		while(len > 0){
-			len = recv(client_socket, buffer, 512, 0);
+		while(len < http_head.http_content_length ){
+			len += recv(client_socket, buffer, 512, MSG_WAITALL);
 //			fprintf(stderr,"\n %s\n ",buffer);
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
-	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER END___*******_______________\n");
-	fprintf(stderr,"\nfinished reading file\n");
+	fprintf(stderr,"\nfinished writing file\n");
         fclose(received_file);
 	return 1;
 }

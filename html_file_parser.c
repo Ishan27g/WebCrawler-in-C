@@ -418,10 +418,9 @@ int read_file(char* filename)
 		//full_line[strlen(full_line) - 1]='\0';
 		if(strlen(full_line) > 0)
 		{
-			fprintf(stderr,"\nline is [%s]\n",full_line);
+			fprintf(stderr,"\nline is [%s]",full_line);
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
-				fprintf(stderr,"\nline has <a or <A\n");
 				strcpy(full_line_copy, full_line);
 				if(extract_href_url(full_line_copy, &crawler_obj->href_url[index]) 
 						== true)
