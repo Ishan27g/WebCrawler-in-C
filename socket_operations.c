@@ -127,14 +127,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 		fprintf(stderr,"\nServer is %s",http_head.http_server);
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
-
-//	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
-//	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
-//	fprintf(stderr,"\ncontent is %s\n",html_content);
-	/*
-	 * validate content type = txt/html in html_content->http_content_type
-	 * */
-	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) != NULL)
+	
+	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return 0;
