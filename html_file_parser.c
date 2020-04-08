@@ -91,7 +91,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, components);
 	fprintf(stderr,"\nbefore copying %s\n",source_string_copy);
 
-	if(source_string_copy == NULL)
+	if(strlen(source_string_copy) == 0)
 	{
 		components = strstr(source_string, "\"//");
 		strcpy(source_string_copy, components+1);
@@ -192,9 +192,9 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 		}
 		else
 		{
-			if(strncmp(source_string, "//",2) == 0)
+			if(strncmp(source_string+1, "//",2) == 0)
 			{
-				strcpy(save_ptr, source_string + 2);
+				strcpy(save_ptr, source_string + 3);
 			}
 			else
 			{
@@ -241,6 +241,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 			return false;
 		}
 	}
+	ptr = NULL;
 	ptr = check_tag(source_string,"href =");
 	if(ptr)
 	{
