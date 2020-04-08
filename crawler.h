@@ -28,17 +28,11 @@
 #define MAX_URL_STR_LEN 256
 #define QUEUE_SIZE 256
 
-/*typedef struct Web_crawler_struct{
-	char *visited_url[100];
-	int visit[100];
-	int visited_count;
-}Web_crawler;
-*/
 typedef struct Href_url_tag{
 	char resource_filename[512];
 	char hostname[32];
 	char local_file[32];
-	bool to_visit;
+	bool visited;
 }Href_url;
 typedef struct Web_crawler_struct{
 	Href_url href_url[100];

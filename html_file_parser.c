@@ -44,7 +44,7 @@ int match_host(char* href_host)
 	strcpy(hostname_copy, original_host);
 	char* ho = strstr(hostname_copy,".");
 	char* hr = strstr(href_copy,".");
-	fprintf(stderr,"\ncomparing hosts %s and %s\n",ho,hr);
+//	fprintf(stderr,"\ncomparing hosts %s and %s\n",ho,hr);
 	if (strcmp(ho, hr) == 0)
 		return 1;
 	else
@@ -87,7 +87,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
 	
-	fprintf(stderr,"\nto extract %s\n",source_string);
+	//fprintf(stderr,"\nto extract %s\n",source_string);
 		
 	components = strstr(source_string_copy, "\"//");
 	if(components)
@@ -96,7 +96,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	}
 	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
 	strcpy(source_string_copy, components);
-	fprintf(stderr,"\ncopied %s\n",source_string_copy_dots);
+	//fprintf(stderr,"\ncopied %s\n",source_string_copy_dots);
 	//jump string pointer to point to start of url
 	//tokenise with 1st quotation char
 	int ret = 0;	
@@ -418,7 +418,7 @@ int read_file(char* filename)
 		//full_line[strlen(full_line) - 1]='\0';
 		if(strlen(full_line) > 0)
 		{
-			fprintf(stderr,"\nline is [%s]",full_line);
+//			fprintf(stderr,"\nline is [%s]",full_line);
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
 				strcpy(full_line_copy, full_line);
@@ -426,12 +426,13 @@ int read_file(char* filename)
 						== true)
 				{	
 					index++;
+					crawler_obj->href_url[index].visited = true;
 				}
 				else
 				{
 					memset(&(crawler_obj->href_url[index]).resource_filename,'\0', 512);
 					memset(&(crawler_obj->href_url[index]).hostname,'\0', 32);
-					crawler_obj->href_url[index].to_visit = false;
+					crawler_obj->href_url[index].visited = false;
 				}
 			}
 		}

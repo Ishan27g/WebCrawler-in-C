@@ -57,7 +57,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	char request_str[512];
 	int len;
         FILE *received_file;
-	char buffer[BUFSIZ];
+	char buffer[BUFSIZ*2];
 	char html_content[BUFSIZ];
 	int n;
 	Http_header http_head;
@@ -139,6 +139,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
 	}
 #endif
+#if 0
 	while(data_remaining >0)
 	{
 		int rec =0;
@@ -146,15 +147,23 @@ int send_receive_socket_data(int client_socket, char* resource)
 		fwrite(buffer, sizeof(char), rec, received_file);
 		data_remaining -= rec;
 	}
-/*	if(strlen(html_content) > 0)
+#endif
+	while ( (n = read(client_socket, buffer, sizeof(buffer)-1)) > 0)
 	{
+		buffer[n] = 0;
+		fwrite(buffer, sizeof(char), len, received_file);
+	}
+#if 0
+	if(strlen(html_content) > 0)
+	{
+		fwrite(buffer, sizeof(char), len, received_file);
 		while(len < (http_head.http_content_length+html_data_received_initially )){
 			len += recv(client_socket, buffer, 512, MSG_WAITALL);
 //			fprintf(stderr,"\n %s\n ",buffer);
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
-*/
+#endif
 		
 	fprintf(stderr,"\nfinished writing file\n");
         fclose(received_file);

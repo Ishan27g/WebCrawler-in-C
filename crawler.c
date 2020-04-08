@@ -94,11 +94,12 @@ int main(int argc, char **argv)
 		memset(crawler.href_url[i].local_file,'\0',sizeof(crawler.href_url[i].local_file));
 		
 		//use this somewhere ?????
-		crawler.href_url[i].to_visit = false;
+		crawler.href_url[i].visited = false;
 	}
 	//need to add the first url to crawler_obj
 	strcpy(crawler.href_url[0].resource_filename, resource); 
 	strcpy(crawler.href_url[0].hostname, original_host); 
+	crawler.href_url[0].visited = true;
 	crawler.href_url_count++;
 
 //while this count is less than 100
@@ -138,8 +139,18 @@ int main(int argc, char **argv)
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
-	printf("\nfinal href_count %d\n",href_count);
-	
+	printf("\nfinal href_count %d\nVisited the following\n",href_count);
+/*	
+	for(i=0;i<href_count;i++)
+	{
+		if(crawler.href_url[i].visited == true)
+		{
+
+			fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
+			fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
+		}
+	}
+*/
 	return 0;
 }
 
