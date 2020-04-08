@@ -36,7 +36,7 @@ int parse_input(char* input)
 		strncpy(input_string, input+7, strlen(input)-7);
 		components = strtok_r(input_string, "/", &dest_temp);
 		strcpy(original_host, components);
-		strncpy(resource, dest_temp, strlen(dest_temp));
+		strcpy(resource, dest_temp);
 		free(input_string);
 	}
 	return 0;
@@ -69,10 +69,10 @@ int main(int argc, char **argv)
 	}
 	
 	int head=0;	
-	send_receive_socket_data(client_socket, resource, head);
-  //      close(client_socket);
+	send_receive_socket_data(client_socket, resource);
+        close(client_socket);
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
-
+	
 	Web_crawler crawler;
 	int i=0;
 	int href_count = 0;
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 		crawler.href_url[i].to_visit = false;
 	}
 //while this count is less than 100
-	href_count = read_file(HTML_FILE_LOCAL, &crawler, head);
+	href_count = read_file(HTML_FILE_LOCAL, &crawler);
 	//now file is useles, valid content copied to crawler_obj, can delete
 	fprintf(stderr,"\ninitial values read : %d\n",href_count);
 	fprintf(stderr,"\nNow crawling following links:------------------");
@@ -100,9 +100,11 @@ int main(int argc, char **argv)
 		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
 		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 		
-		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, i+1);
+		client_socket = initialise_socket();
+		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
+		close(client_socket);
 		//if(i==1)
-		href_count = read_file(HTML_FILE_LOCAL, &crawler, i+1);
+		href_count = read_file(HTML_FILE_LOCAL, &crawler);
 		//adding next valid url to consequent index of crawler
 		//and updated href_count as well as for loop 
 		//

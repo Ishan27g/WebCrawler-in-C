@@ -42,7 +42,7 @@ int initialise_socket()
         }
 	return client_socket;
 }
-void* send_receive_socket_data(int client_socket, char* resource, int count)
+void* send_receive_socket_data(int client_socket, char* resource)
 {
 	char request_str[512];
         int len;
@@ -76,9 +76,7 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 	{
 		fprintf( stderr,"\nSent request\n%s", request_str);
 	}
-	char local_file[32];
-	sprintf(local_file, "%s_%d", HTML_FILE_LOCAL, count);
-	received_file = fopen(local_file, "w");
+	received_file = fopen(HTML_FILE_LOCAL, "w");
         if (received_file == NULL)
         {
 		fprintf( stderr,"Failed to open local file");
@@ -94,10 +92,25 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 	memset(http_head.http_rsp_code,'\0',sizeof(http_head.http_rsp_code));
 	memset(http_head.http_server,'\0',sizeof(http_head.http_server));
 	memset(http_head.http_content_type,'\0',sizeof(http_head.http_content_type));
-	html_content = (char*)malloc(512);
-	memset(html_content,'\0',512);
+	http_head.http_content_length = 0;
+	html_content = calloc(len, sizeof(char));
 
 	get_http_header(buffer, &http_head, html_content);
+	fprintf(stderr,"\nhtml content is \n%s\n\n",html_content);
+	
+	int data_received = len;
+	int html_data_received_initially = (len > http_head.http_content_length) ? 
+		(len - http_head.http_content_length) : (http_head.http_content_length - len);
+
+	int html_data_remaining = 
+	fprintf(stderr,"\ndata_received = %d\nhtml_data_received_initially = %d\nhttp_head.http_content_length = %d\n",data_received,
+		       	html_data_received_initially,http_head.http_content_length);
+
+
+	//int data_remaining = http_head.http_content_length > 512 ? (http_head.http_content_length -512) : 0;
+	//fprintf(stderr,"\ndata_remaining = %d - %d = %d \n%d\n",);
+	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
+	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
 //	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER__________*******_______________\n");
 	if(http_head.http_version)
@@ -108,9 +121,9 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 		fprintf(stderr,"\nServer is %s",http_head.http_server);
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
-	
+
+	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
 //	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
-//	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
 //	fprintf(stderr,"\ncontent is %s\n",html_content);
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
@@ -121,11 +134,13 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 		return NULL;
 	}
 */
-	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
-	while(len > 0){
-		len = recv(client_socket, buffer, 512, 0);
-//		fprintf(stderr,"\n %s\n ",buffer);
-                fwrite(buffer, sizeof(char), len, received_file);
+	if(strlen(html_content) > 0)
+	{
+		while(len > 0){
+			len = recv(client_socket, buffer, 512, 0);
+			//		fprintf(stderr,"\n %s\n ",buffer);
+			fwrite(buffer, sizeof(char), len, received_file);
+		}
 	}
 	free(html_content);
         fclose(received_file);

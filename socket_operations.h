@@ -3,7 +3,7 @@
 
 #include "crawler.h"
 #include "http_headers.h"
-void* send_receive_socket_data(int client_socket, char* resource, int count);
+void* send_receive_socket_data(int client_socket, char* resource);
 int initialise_socket();
 
 #endif

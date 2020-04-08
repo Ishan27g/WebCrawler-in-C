@@ -19,7 +19,7 @@ int match_host(char* href_host)
 		return 0;
 	}
 	char* href_copy = (char*)malloc(strlen(href_host));
-	char* hostname_copy = (char*)malloc(strlen("web1.comp30023"));
+	char* hostname_copy = (char*)malloc(strlen(original_host));
 
 	strcpy(href_copy, href_host);
 	strcpy(hostname_copy, original_host);
@@ -104,7 +104,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 		components = strtok_r(source_string_copy, "/", &dest_temp);
 
 		
-		int ret = match_host(components);
+		int ret = 1;//match_host(components);
 		if(ret == 0)
 		{
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
@@ -238,11 +238,9 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	return false;
 }
 
-int read_file(char* filename, Web_crawler* crawler_obj, int count)
+int read_file(char* filename, Web_crawler* crawler_obj)
 {
-	char f[32];
-	sprintf(f,"%s_%d",filename,count);
-	FILE* file = fopen(f, "r"); /* should check the result */
+	FILE* file = fopen(HTML_FILE_LOCAL, "r"); /* should check the result */
 	size_t len = 512;
 	char full_line[len];
 	char full_line_copy[len];
@@ -250,7 +248,7 @@ int read_file(char* filename, Web_crawler* crawler_obj, int count)
 
 	if(!file)
 	{
-		fprintf(stderr,"\nfailed to open %s\n",f);
+		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
 		return 0;
 	}
 	while(fgets(full_line, 512, file)) {
