@@ -172,7 +172,7 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 {
 	char* ptr = NULL;
 	char* save_ptr = NULL;
-	save_ptr = (char*) malloc(1024);
+	save_ptr = (char*) malloc(strlen(source_string));
 	if(!save_ptr)
 	{
 		fprintf(stderr,"\nmalloc failed\n");
@@ -224,7 +224,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href=");
 	if(ptr)
 	{	
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -246,7 +246,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href =");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -268,7 +268,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href = ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -290,7 +290,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href= ");
 	if(ptr)
 	{	
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -312,7 +312,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF=");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -334,7 +334,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF =");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -356,7 +356,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF = ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -378,7 +378,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF= ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(1024);
+		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");

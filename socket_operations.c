@@ -93,7 +93,6 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
         }
         /* Receiving file size */
-	len = 0;
 	len = recv(client_socket, buffer, 512, 0);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
@@ -143,16 +142,11 @@ int send_receive_socket_data(int client_socket, char* resource)
 
 	if(strlen(html_content) > 0)
 	{
-		while(recv(client_socket, buffer, 512, 0) > 0){
-			fwrite(buffer, sizeof(char), len, received_file);
-		}
-		/*
-		while(len < http_head.http_content_length ){
+		while(len < (http_head.http_content_length+html_data_received_initially )){
 			len += recv(client_socket, buffer, 512, MSG_WAITALL);
 //			fprintf(stderr,"\n %s\n ",buffer);
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
-		*/
 	}
 	fprintf(stderr,"\nfinished writing file\n");
         fclose(received_file);
