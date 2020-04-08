@@ -172,7 +172,7 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 {
 	char* ptr = NULL;
 	char* save_ptr = NULL;
-	save_ptr = (char*) malloc(512);
+	save_ptr = (char*) malloc(1024);
 	if(!save_ptr)
 	{
 		fprintf(stderr,"\nmalloc failed\n");
@@ -224,7 +224,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href=");
 	if(ptr)
 	{	
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -246,7 +246,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href =");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -268,7 +268,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href = ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -290,7 +290,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"href= ");
 	if(ptr)
 	{	
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -312,7 +312,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF=");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -334,7 +334,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF =");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -356,7 +356,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF = ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -378,7 +378,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	ptr = check_tag(source_string,"HREF= ");
 	if(ptr)
 	{
-		save_ptr = (char*) malloc(512);
+		save_ptr = (char*) malloc(1024);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
@@ -402,7 +402,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 int read_file(char* filename)
 {
 	FILE* file = fopen(HTML_FILE_LOCAL, "r"); /* should check the result */
-	size_t len = 512;
+	size_t len = 1024;
 	char full_line[len];
 	char full_line_copy[len];
  	Web_crawler* crawler_obj = &crawler;
@@ -413,7 +413,7 @@ int read_file(char* filename)
 		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
 		return 0;
 	}
-	while(fgets(full_line, 512, file)) {
+	while(fgets(full_line, 1024, file)) {
 		/*remove newline character*/
 		//full_line[strlen(full_line) - 1]='\0';
 		if(strlen(full_line) > 0)
@@ -429,13 +429,13 @@ int read_file(char* filename)
 				}
 				else
 				{
-					memset(&(crawler_obj->href_url[index]).resource_filename,'\0', 512);
+					memset(&(crawler_obj->href_url[index]).resource_filename,'\0', 1024);
 					memset(&(crawler_obj->href_url[index]).hostname,'\0', 32);
 					crawler_obj->href_url[index].to_visit = false;
 				}
 			}
 		}
-		memset(full_line,'\0',512);
+		memset(full_line,'\0',1024);
 	}
 	fclose(file);
 	crawler.href_url_count = index;
