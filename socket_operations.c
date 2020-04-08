@@ -117,8 +117,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 		       	html_data_received_initially,http_head.http_content_length);
 
 
-	//int data_remaining = http_head.http_content_length > 512 ? (http_head.http_content_length -512) : 0;
-	//fprintf(stderr,"\ndata_remaining = %d - %d = %d \n%d\n",);
+	int data_remaining = http_head.http_content_length > len ? (http_head.http_content_length - len) : 0;
+	fprintf(stderr,"\ndata_remaining = %d - %d = %d \n%d\n",);
 	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
 	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
@@ -139,8 +139,15 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
 	}
 #endif
-
-	if(strlen(html_content) > 0)
+	r
+	while(data_remaining >0)
+	{
+		int rec =0;
+		rec = recv(client_socket, buffer, 512, 0);
+		data_remaining -= rec;
+	}
+	recv(client_socket,buffer,
+/*	if(strlen(html_content) > 0)
 	{
 		while(len < (http_head.http_content_length+html_data_received_initially )){
 			len += recv(client_socket, buffer, 512, MSG_WAITALL);
@@ -148,6 +155,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
+*/
+		
 	fprintf(stderr,"\nfinished writing file\n");
         fclose(received_file);
 	return 1;
