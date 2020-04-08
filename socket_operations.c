@@ -107,7 +107,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	memset(html_content,'\0',BUFSIZ);
 
 	get_http_header(buffer, &http_head, &html_content[0]);
-	fprintf(stderr,"\nhtml content is \n%s\n",html_content);
+//	fprintf(stderr,"\nhtml content is \n%s\n",html_content);
 	
 	int data_received = len;
 	int html_data_received_initially = (len > http_head.http_content_length) ? 
@@ -144,7 +144,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	{
 		while(len > 0){
 			len = recv(client_socket, buffer, 512, 0);
-			fprintf(stderr,"\n %s\n ",buffer);
+//			fprintf(stderr,"\n %s\n ",buffer);
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
