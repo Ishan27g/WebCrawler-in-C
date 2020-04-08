@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 	int head=0;	
 	send_receive_socket_data(client_socket, resource, head);
   //      close(client_socket);
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 
 	Web_crawler crawler;
 	int i=0;
@@ -91,16 +92,17 @@ int main(int argc, char **argv)
 //while this count is less than 100
 	href_count = read_file(HTML_FILE_LOCAL, &crawler, head);
 	//now file is useles, valid content copied to crawler_obj, can delete
-	printf("\ninitial values read : %d\n",href_count);
+	fprintf(stderr,"\ninitial values read : %d\n",href_count);
+	fprintf(stderr,"\nNow crawling following links:------------------");
 //	int socket = initialise_socket();
 	for(i=0;i<href_count;i++)
 	{
 		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
 		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 		
-//		send_receive_socket_data(socket, crawler.href_url[i].resource_filename, i);
-		if(i==1)
-			href_count = read_file(HTML_FILE_LOCAL, &crawler, head+1);
+		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, i+1);
+		//if(i==1)
+		href_count = read_file(HTML_FILE_LOCAL, &crawler, i+1);
 		printf("\nat i= %d, href_count is now %d\n",i,href_count);
 
 
@@ -113,6 +115,8 @@ int main(int argc, char **argv)
 		//handling for response codes
 		//
 		//delete the files also, can add file pointer variable to crawler_obj
+		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
 	printf("\nfinal href_count %d\n",href_count);
 	
