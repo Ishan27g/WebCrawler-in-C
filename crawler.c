@@ -68,7 +68,6 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	
-	int head=0;	
 	send_receive_socket_data(client_socket, resource);
         close(client_socket);
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
@@ -99,8 +98,8 @@ int main(int argc, char **argv)
 	{
 		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
 		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
-		
-		client_socket = initialise_socket();
+			
+		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
 		close(client_socket);
 		//if(i==1)

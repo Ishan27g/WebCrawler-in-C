@@ -3,7 +3,7 @@
 
 extern char* original_host;
 
-int initialise_socket()
+int initialise_socket(char* crawling_host)
 {
 	int client_socket;
 	struct hostent * localhost_server;
@@ -11,8 +11,16 @@ int initialise_socket()
         memset(&server_socket, 0, sizeof(server_socket));
 	
         /* Construct the server_socket structure */
-	fprintf( stderr,"\noriginal_host is %s\n",original_host);
-	localhost_server = gethostbyname(original_host);
+	if(crawling_host == NULL)
+	{
+		fprintf( stderr,"\noriginal_host is %s\n",original_host);
+		localhost_server = gethostbyname(original_host);
+	}
+	else
+	{
+		fprintf(stderr,"\nfrom host %s, crawling url at host %s\n", original_host, crawling_host);
+		localhost_server = gethostbyname(crawling_host);
+	}
 	if(!localhost_server)
 	{
 		fprintf( stderr,"\nERROR, no such host\n");
@@ -45,7 +53,7 @@ int initialise_socket()
 void* send_receive_socket_data(int client_socket, char* resource)
 {
 	char request_str[512];
-        int len;
+	int len;
         FILE *received_file;
 	char buffer[BUFSIZ];
 	char* html_content = NULL;
@@ -96,13 +104,12 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	html_content = calloc(len, sizeof(char));
 
 	get_http_header(buffer, &http_head, html_content);
-	fprintf(stderr,"\nhtml content is \n%s\n\n",html_content);
+//	fprintf(stderr,"\nhtml content is \n%s\n\n",html_content);
 	
 	int data_received = len;
 	int html_data_received_initially = (len > http_head.http_content_length) ? 
 		(len - http_head.http_content_length) : (http_head.http_content_length - len);
 
-	int html_data_remaining = 
 	fprintf(stderr,"\ndata_received = %d\nhtml_data_received_initially = %d\nhttp_head.http_content_length = %d\n",data_received,
 		       	html_data_received_initially,http_head.http_content_length);
 
@@ -122,7 +129,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 
-	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
+//	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
 //	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 //	fprintf(stderr,"\ncontent is %s\n",html_content);
 	/*
