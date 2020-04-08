@@ -49,7 +49,7 @@ int initialise_socket(char* crawling_host)
         }
 	return client_socket;
 }
-void* send_receive_socket_data(int client_socket, char* resource)
+int send_receive_socket_data(int client_socket, char* resource)
 {
 	char request_str[512];
 	int len;
@@ -87,7 +87,7 @@ void* send_receive_socket_data(int client_socket, char* resource)
         if (received_file == NULL)
         {
 		fprintf( stderr,"Failed to open local file");
-		return NULL;
+		return 0;
         }
         /* Receiving file size */
 	len = recv(client_socket, buffer, 512, 0);
@@ -134,12 +134,12 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	/*
 	 * validate content type = txt/html in html_content->http_content_type
 	 * */
-/*	if(strcmp(http_head.http_content_type, " text/html") != 0)
+	if(strstr(http_head.http_content_type, "text/html") != NULL)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
-		return NULL;
+		return 0;
 	}
-*/
+
 	if(strlen(html_content) > 0)
 	{
 		while(len > 0){
@@ -150,5 +150,5 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	}
 	free(html_content);
         fclose(received_file);
-	return NULL;
+	return 1;
 }

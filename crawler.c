@@ -69,12 +69,17 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	
-	send_receive_socket_data(client_socket, resource);
+	int ret = send_receive_socket_data(client_socket, resource);
         close(client_socket);
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
-	
+	if(ret != 1)
+	{
+		fprintf(stderr,"\nCONTENT IS NOT TEXT/HTML\n");
+		return 0;
+	}
 	int i=0;
 	int href_count = 0;
+	int index = 0;
 
 		
 	crawler.href_url_count = 0;
@@ -96,29 +101,28 @@ int main(int argc, char **argv)
 //	int socket = initialise_socket();
 	for(i=0;i<href_count;i++)
 	{
-		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
-		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
+		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[index].resource_filename);
+		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[index].hostname);
 			
-		client_socket = initialise_socket(crawler.href_url[i].hostname);
-		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
+		client_socket = initialise_socket(crawler.href_url[index].hostname);
+		ret = 0;
+		ret = send_receive_socket_data(client_socket, crawler.href_url[index].resource_filename);
 		close(client_socket);
-		//if(i==1)
-		href_count = read_file(HTML_FILE_LOCAL);
+
+		if(ret == 1)
+		{
+			href_count = read_file(HTML_FILE_LOCAL);
 		//adding next valid url to consequent index of crawler
 		//and updated href_count as well as for loop 
 		//
-		//
-		//
-		//handling for mime type- text/html
-		//
-		//
-		//
 		//handling for response codes
 		//
-		//
-		//
-		//
 		//delete the files also, can add file pointer variable to crawler_obj
+		}
+		else
+		{
+			fprintf(stderr,"\ncontent type is not text/html\n");
+		}
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
