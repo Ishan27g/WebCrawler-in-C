@@ -88,6 +88,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	//tokenise with 1st quotation char
 	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
 	strcpy(source_string_copy, components);
+	fprintf(stderr,"\nbefore copying %s\n",source_string_copy);
 
 	int ret = 0;	
 	int dots = count_dots(components);
@@ -145,16 +146,16 @@ bool extract(char* source_string, Href_url* href_url_element)
 		components = strtok_r(NULL, "", &dest_temp);
 		strcpy(href_url_element->resource_filename, components);
 		//strncpy(href_url_element->resource_filename, components, strlen(components));
-		free_ptr(source_string_copy);
-		free_ptr(source_string_copy_dots);
+//		free_ptr(source_string_copy);
+//		free_ptr(source_string_copy_dots);
 		ret = lookup_duplicate_page(href_url_element->resource_filename);
 		if(ret ==1)
 			return true;
 		else
 			return false;
 	}
-	free_ptr(source_string_copy);
-	free_ptr(source_string_copy_dots);
+//	free_ptr(source_string_copy);
+//	free_ptr(source_string_copy_dots);
 	return false;
 }
 
@@ -288,7 +289,7 @@ int read_file(char* filename)
 	}
 	while(fgets(full_line, 512, file)) {
 		/*remove newline character*/
-		full_line[strlen(full_line) - 1]='\0';
+		//full_line[strlen(full_line) - 1]='\0';
 		if(strlen(full_line) > 0)
 		{
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)

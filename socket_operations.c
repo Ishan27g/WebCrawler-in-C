@@ -122,7 +122,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
 	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
-//	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER__________*******_______________\n");
+//	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER START________*******_______________\n");
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s",http_head.http_version);
 	if(http_head.http_rsp_code)
@@ -144,10 +144,12 @@ int send_receive_socket_data(int client_socket, char* resource)
 	{
 		while(len > 0){
 			len = recv(client_socket, buffer, 512, 0);
-			//		fprintf(stderr,"\n %s\n ",buffer);
+			fprintf(stderr,"\n %s\n ",buffer);
 			fwrite(buffer, sizeof(char), len, received_file);
 		}
 	}
+	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER END___*******_______________\n");
+	fprintf(stderr,"\nfinished reading file\n");
         fclose(received_file);
 	return 1;
 }
