@@ -15,8 +15,10 @@ void* free_ptr(void* ptr)
 int lookup_duplicate_page(char* pagename)
 {
 	int i=0;
+	fprintf(stderr,"\ncrawler.href_url_count is %d\n",crawler.href_url_count);
 	for(i=0; i < crawler.href_url_count; i++)
 	{
+		fprintf(stderr,"\ncomparing [%s] with [%s]\n",pagename, crawler.href_url[i].resource_filename);
 		if(strcmp(pagename, crawler.href_url[i].resource_filename) == 0)
 		{
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");

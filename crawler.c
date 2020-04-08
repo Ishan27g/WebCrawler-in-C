@@ -74,9 +74,9 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	
+	/*send request and recieve valid text/html resource*/
 	int ret = send_receive_socket_data(client_socket, resource);
         close(client_socket);
-	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	if(ret != 1)
 	{
 		fprintf(stderr,"\nCONTENT IS NOT TEXT/HTML\n");
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 		if(ret == 1)
 		{
 			href_count = read_file(HTML_FILE_LOCAL);
-			visited_count ++;
+			visited_count++;
 		//adding next valid url to consequent index of crawler
 		//and updated href_count as well as for loop 
 		//

@@ -93,8 +93,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
         }
         /* Receiving file size */
-	//len = recv(client_socket, buffer, 512, 0);
-	len =read(client_socket, buffer, sizeof(buffer)-1);
+	len = recv(client_socket, buffer, 512, 0);
+	//len =read(client_socket, buffer, sizeof(buffer)-1);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
 	//http_head = malloc(sizeof(Http_header) + 512);
