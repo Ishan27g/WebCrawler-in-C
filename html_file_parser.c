@@ -275,7 +275,7 @@ int read_file(char* filename)
 	char full_line[len];
 	char full_line_copy[len];
  	Web_crawler* crawler_obj = &crawler;
-	int index = crawler_obj->href_url_count;//add data to last valid index
+	int index = crawler.href_url_count;//add data to last valid index
 
 	if(!file)
 	{
@@ -306,6 +306,6 @@ int read_file(char* filename)
 		memset(full_line,'\0',512);
 	}
 	fclose(file);
-	crawler_obj->href_url_count = index;
+	crawler.href_url_count = index;
 	return index;
 }
