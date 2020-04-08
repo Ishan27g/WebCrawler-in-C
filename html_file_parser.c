@@ -92,14 +92,11 @@ bool extract(char* source_string, Href_url* href_url_element)
 	components = strstr(source_string_copy, "\"//");
 	if(components)
 	{
-		strcpy(source_string_copy, components + 3);
-		fprintf(stderr,"\ncopied %s\n",source_string_copy);
+		strcpy(source_string_copy_dots, components + 3);
 	}
-	else
-	{
-		components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
-		strcpy(source_string_copy, components);
-	}
+	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
+	strcpy(source_string_copy, components);
+	fprintf(stderr,"\ncopied %s\n",source_string_copy_dots);
 	//jump string pointer to point to start of url
 	//tokenise with 1st quotation char
 	int ret = 0;	
