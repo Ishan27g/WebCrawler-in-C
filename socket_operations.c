@@ -66,7 +66,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
 		memset(request_str,'\0',512);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
-		request_str[strlen(request_str)] = '\0';
+//		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	}
 	else
@@ -74,7 +74,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
 		memset(request_str,'\0',512);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
-		request_str[strlen(request_str)] = '\0';
+//		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	}
 	n = write(client_socket, request_str, strlen(request_str));
