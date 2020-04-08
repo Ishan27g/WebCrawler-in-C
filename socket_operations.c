@@ -99,14 +99,15 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 
 	get_http_header(buffer, &http_head, html_content);
 
+//	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER__________*******_______________\n");
 	if(http_head.http_version)
-		fprintf(stderr,"\nversion is %s\n",http_head.http_version);
+		fprintf(stderr,"\nversion is %s",http_head.http_version);
 	if(http_head.http_rsp_code)
-		fprintf(stderr,"\ncode is %s\n",http_head.http_rsp_code);
+		fprintf(stderr,"\ncode is %s",http_head.http_rsp_code);
 	if(http_head.http_server)
-		fprintf(stderr,"\nServer is %s\n",http_head.http_server);
+		fprintf(stderr,"\nServer is %s",http_head.http_server);
 	if(http_head.http_content_type)
-		fprintf(stderr,"\ncontent type is [%s]\n",http_head.http_content_type);
+		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 	
 //	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 //	fprintf(stderr,"\ncontent length is %d\n",http_head.http_content_length);
@@ -123,7 +124,7 @@ void* send_receive_socket_data(int client_socket, char* resource, int count)
 	fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 	while(len > 0){
 		len = recv(client_socket, buffer, 512, 0);
-		fprintf(stderr,"\n %s\n ",buffer);
+//		fprintf(stderr,"\n %s\n ",buffer);
                 fwrite(buffer, sizeof(char), len, received_file);
 	}
 	free(html_content);

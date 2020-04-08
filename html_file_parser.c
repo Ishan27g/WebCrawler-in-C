@@ -13,7 +13,7 @@ int match_host(char* href_host)
 {
 	if(href_host == NULL)
 	{
-		printf("\nhost is null, not present in line, dont add the crawler_obj->href_element\n");
+		fprintf(stderr,"\nhost is null, not present in line, dont add the crawler_obj->href_element");
 		return 0;
 	}
 	char* href_copy = (char*)malloc(strlen(href_host));
@@ -21,7 +21,6 @@ int match_host(char* href_host)
 
 	strcpy(href_copy, href_host);
 	strcpy(hostname_copy,"web1.comp30023");
-	//printf("\ncomparing [%s] with [%s]\n",href_copy, hostname_copy);
 	char* ho = strstr(hostname_copy,".");
 	char* hr = strstr(href_copy,".");
 	if (strcmp(ho, hr) == 0)
@@ -72,7 +71,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 	int dots = count_dots(components);
 	
 //	components = strtok_r(source_string_copy, "\"", &dest_temp);
-//	printf("\nstring here is %s with dots %d\n",source_string_copy, dots);
 	if(dots == 0)
 	{
 		/*relative path to no file*/
@@ -104,10 +102,12 @@ bool extract(char* source_string, Href_url* href_url_element)
 		components = strtok_r(source_string_copy, "/", &dest_temp);
 
 		
-		int ret = true;//match_host(components);
+		int ret = match_host(components);
 		if(ret == 0)
 		{
-		//	printf("\nnot added this to crawler %s\n",components);
+			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+			fprintf(stderr,"\nNot crawling url :  %s\n",components);
+			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			return false;
 		}
 		strncpy(href_url_element->hostname, components, strlen(components));
@@ -124,7 +124,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 
 bool extract_url(char* source_string, Href_url* href_url_element)
 {
-	//printf("\nextract url for %s\n",source_string);
 	char* ptr = NULL;
 	char* save_ptr = NULL;
 	save_ptr = (char*) malloc(512);
@@ -167,7 +166,6 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 bool extract_href_url(char* source_string, Href_url* href_url_element)
 {
 
-	//printf("\nextract href url for %s\n",source_string);
 	char* ptr = NULL;
 	char* save_ptr = NULL;
 	ptr = check_tag(source_string,"href =");
@@ -242,7 +240,6 @@ int read_file(char* filename, Web_crawler* crawler_obj, int count)
 {
 	char f[32];
 	sprintf(f,"%s_%d",filename,count);
-//	printf("\nfile is %s and count is %d\n",f,count);
 	FILE* file = fopen(f, "r"); /* should check the result */
 	size_t len = 512;
 	char full_line[len];
@@ -251,7 +248,7 @@ int read_file(char* filename, Web_crawler* crawler_obj, int count)
 
 	if(!file)
 	{
-		printf("\nfailed to open %s\n",f);
+		fprintf(stderr,"\nfailed to open %s\n",f);
 		return 0;
 	}
 	while(fgets(full_line, 512, file)) {
@@ -269,7 +266,6 @@ int read_file(char* filename, Web_crawler* crawler_obj, int count)
 				}
 				else
 				{
-					fprintf(stderr,"\n________********________*****\nfalse line %s\nnot adding\n----****____****\n",full_line_copy);
 					memset(&(crawler_obj->href_url[index]).resource_filename,'\0', 512);
 					memset(&(crawler_obj->href_url[index]).hostname,'\0', 32);
 					crawler_obj->href_url[index].to_visit = false;
@@ -282,56 +278,3 @@ int read_file(char* filename, Web_crawler* crawler_obj, int count)
 	crawler_obj->href_url_count = index;
 	return crawler_obj->href_url_count;
 }
-#if 0
-int main(int argc, char **argv)
-{
-	Web_crawler crawler;
-	int i=0;
-	int href_count = 0;
-
-		
-	crawler.href_url_count = 0;
-
-	for(i=0;i<100;i++)
-	{	
-		memset(crawler.href_url[i].resource_filename,'\0',sizeof(crawler.href_url[i].resource_filename));
-		memset(crawler.href_url[i].hostname,'\0',sizeof(crawler.href_url[i].hostname));
-		memset(crawler.href_url[i].local_file,'\0',sizeof(crawler.href_url[i].local_file));
-		
-		//use this somewhere ?????
-		crawler.href_url[i].to_visit = false;
-	}
-//while this count is less than 100
-
-	
-	href_count = read_file("local_html_file.html", &crawler);
-	//now file is useles, valid content copied to crawler_obj, can delete
-	
-	printf("\ninitial values read : %d\n",href_count);
-//	int socket = initialise_socket();
-	for(i=0;i<href_count;i++)
-	{
-		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
-		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
-		
-//		send_receive_socket_data(socket, crawler.href_url[i].resource_filename, i);
-
-		href_count = read_file("local_html_file_1.html", &crawler, i);
-		printf("\nat i= %d, href_count is now %d\n",i,href_count);
-
-
-		//send req_ recieve_file_num_x
-		//read_file() , this will start crawler_obj at index = href_count
-		//adding new url to next index
-		//and updating href_count as well as for loop 
-		//
-		//handling for mime type- text/html
-		//handling for response codes
-		//
-		//delete the files also, can add file pointer variable to crawler_obj
-	}
-	printf("\nfinal href_count %d\n",href_count);
-	
-	return 0;
-}
-#endif

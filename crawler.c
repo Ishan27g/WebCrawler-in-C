@@ -103,16 +103,19 @@ int main(int argc, char **argv)
 		send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, i+1);
 		//if(i==1)
 		href_count = read_file(HTML_FILE_LOCAL, &crawler, i+1);
-		printf("\nat i= %d, href_count is now %d\n",i,href_count);
-
-
-		//send req_ recieve_file_num_x
-		//read_file() , this will start crawler_obj at index = href_count
-		//adding new url to next index
-		//and updating href_count as well as for loop 
+		//adding next valid url to consequent index of crawler
+		//and updated href_count as well as for loop 
+		//
+		//
 		//
 		//handling for mime type- text/html
+		//
+		//
+		//
 		//handling for response codes
+		//
+		//
+		//
 		//
 		//delete the files also, can add file pointer variable to crawler_obj
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
@@ -123,37 +126,3 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-#if 0
-	crawler.visited_count = 0;
-	int i=0;
-	for(i=0;i<100;i++)
-	{
-		crawler.visit[i] = 0;
-		crawler.visited_url[i] = NULL;
-	}
-
-	parse_html_file(HTML_FILE_LOCAL, &crawler);
-
-	for(i=0;i< crawler.visited_count;i++)
-	{
-		fprintf( stderr,"\nTo send request for %s\n",crawler.visited_url[i]);
-		//add following as task to the threadpool
-		//	send req
-/*
-		client_socket = initialise_socket();
-		send_receive_socket_data(client_socket,crawler.visited_url[i]);
-		close(client_socket);
-*/
-		//	on valid response, mark crawler.visit[i] = 1
-		//	create file
-		//	parse valid urls
-		//	add urls to crawler
-	}
-
-	fprintf( stderr,"\nUrls visited - %d\n",crawler.visited_count);
-	free(original_host);
-	free(resource);
-
-	return 0;
-}
-#endif
