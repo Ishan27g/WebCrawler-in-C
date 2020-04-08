@@ -7,7 +7,7 @@
 #bst_print:target 
 	#gcc -Wall -o bst_print main.c bst.c llqueue.c
 
-#all: crawler.c html_file_parser.c socket_operations.c http_headers.c
+all: crawler.c html_file_parser.c socket_operations.c http_headers.c
 	gcc -Wall -o crawler crawler.c html_file_parser.c socket_operations.c http_headers.c -g 
 local:
 	gcc -Wall -o crawler crawler.c html_file_parser.c socket_operations.c http_headers.c -g -DVM_DEBUG_ON
