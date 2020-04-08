@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 			
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
-		printf("\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
+		fprintf(stderr,"\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
 		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
 		close(client_socket);
 
@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 		}
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
-	printf("\nfinal href_count %d\nVisited the following\n",href_count);
-/*	
+	fprintf(stderr,"\nfinal href_count %d\nVisited the following\n",href_count);
+	
 	for(i=0;i<href_count;i++)
 	{
 		if(crawler.href_url[i].visited == true)
@@ -157,7 +157,6 @@ int main(int argc, char **argv)
 			fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 		}
 	}
-*/
 	return 0;
 }
 
