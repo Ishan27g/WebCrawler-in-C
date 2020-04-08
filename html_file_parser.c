@@ -89,7 +89,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
 	
-	//fprintf(stderr,"\nto extract %s\n",source_string);
+//	fprintf(stderr,"\nto extract %s\n",source_string);
 		
 	components = strstr(source_string_copy, "\"//");
 	if(components)
@@ -404,7 +404,7 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 int read_file(char* filename)
 {
 	FILE* file = fopen(HTML_FILE_LOCAL, "r"); /* should check the result */
-	size_t len = 512;
+	size_t len = 1024;
 	char full_line[len];
 	char full_line_copy[len];
 // 	Web_crawler* crawler_obj = &crawler;
@@ -416,7 +416,7 @@ int read_file(char* filename)
 		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
 		return 0;
 	}
-	while(fgets(full_line, 512, file)) {
+	while(fgets(full_line, 1024, file)) {
 		/*remove newline character*/
 		//full_line[strlen(full_line) - 1]='\0';
 		if(strlen(full_line) > 0)
