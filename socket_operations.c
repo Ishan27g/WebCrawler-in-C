@@ -149,23 +149,21 @@ int send_receive_socket_data(int client_socket, char* resource)
 		data_remaining -= rec;
 	}
 #endif
+#if 0
 	while ( (n = read(client_socket, buffer, sizeof(buffer)-1)) > 0)
 	{
 		buffer[n] = 0;
 		fwrite(buffer, sizeof(char), len, received_file);
 	}
-#if 0
-	if(strlen(html_content) > 0)
-	{
-		fwrite(buffer, sizeof(char), len, received_file);
-		while(len < (http_head.http_content_length+html_data_received_initially )){
-			len += recv(client_socket, buffer, 512, MSG_WAITALL);
-//			fprintf(stderr,"\n %s\n ",buffer);
-			fwrite(buffer, sizeof(char), len, received_file);
-		}
-	}
 #endif
-		
+	len = 0;
+	while(data_remaining > 0)
+	{
+		len = recv(client_socket, buffer, 512, 0);
+		data_remaining = data_remaining - len;
+		fwrite(buffer, sizeof(char), len, received_file);
+	}
+
 	fprintf(stderr,"\nfinished writing file\n");
         fclose(received_file);
 	return 1;
