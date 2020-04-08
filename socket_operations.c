@@ -124,14 +124,14 @@ int send_receive_socket_data(int client_socket, char* resource)
 	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
 //	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER START________*******_______________\n");
-/*	if(http_head.http_version)
+	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s",http_head.http_version);
 	if(http_head.http_rsp_code)
 		fprintf(stderr,"\ncode is %s",http_head.http_rsp_code);
 	if(http_head.http_server)
 		fprintf(stderr,"\nServer is %s",http_head.http_server);
 	if(http_head.http_content_type)
-*/		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
+		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 	
 //#ifndef VM_DEBUG_ON
 	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)

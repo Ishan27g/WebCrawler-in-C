@@ -55,11 +55,12 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	int len = strlen(argv[1]);
+	printf("\nlen is %d\n",len);
 	original_host = NULL;
-	original_host = malloc(len);
-	memset(original_host,'\0',len);
-	resource = malloc(len);
-	memset(resource,'\0',len);
+	original_host = malloc(512);
+	memset(original_host,'\0',512);
+	resource = malloc(512);
+	memset(resource,'\0',512);
 	parse_input(argv[1]);
 	resource[strlen(resource)]='\0';	
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
@@ -160,6 +161,8 @@ int main(int argc, char **argv)
 			fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 		}
 	}
+	free(original_host);
+	free(resource);
 	return 0;
 }
 
