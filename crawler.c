@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	fprintf( stderr,"\nhost is %s\n", original_host);
 	fprintf( stderr,"\nresource is %s\n", resource);
 
-	client_socket = initialise_socket(NULL);
+	client_socket = initialise_socket("");
 	if(client_socket == 0)
 	{
 		fprintf( stderr,"\nsocket not initialised\n");
