@@ -112,8 +112,8 @@ int main(int argc, char **argv)
 //	int socket = initialise_socket();
 	for(i=1;i<href_count;i++)
 	{
-		printf("\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
-		printf("\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
+		fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
+		fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 			
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
