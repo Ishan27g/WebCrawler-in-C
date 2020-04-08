@@ -17,12 +17,12 @@ int lookup_duplicate_page(char* pagename)
 	int i=0;
 	for(i=0; i <= crawler.href_url_count; i++)
 	{
-		fprintf(stderr,"\nmatchig %s with %s\n",pagename, crawler.href_url[i].resource_filename);
 		if(strcmp(pagename, crawler.href_url[i].resource_filename) == 0)
 		{
-			fprintf(stderr,"\n#########@@@@@@@@@@@@@@@@@@@###############\n");
-			fprintf(stderr,"\n#########@@@@@@@@@@@@@@@@@@@###############\n");
-			fprintf(stderr,"\nduplicate resource %s and %s\n",pagename, crawler.href_url[i].resource_filename);
+			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+			fprintf(stderr,"\nNot crawling duplicate resource %s, already visited at %s . %s\n",pagename,
+				       crawler.href_url[i].hostname, crawler.href_url[i].resource_filename);
+			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			return 0;
 		}
 	}
@@ -134,7 +134,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 		if(ret == 0)
 		{
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-			fprintf(stderr,"\nNot crawling url :  %s\n",components);
+			fprintf(stderr,"\nNot crawling url(host_mismatch) :  %s\n",components);
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			return false;
 		}

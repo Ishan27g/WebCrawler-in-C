@@ -13,7 +13,6 @@ int initialise_socket(char* crawling_host)
         /* Construct the server_socket structure */
 	if(strlen(crawling_host) == 0)
 	{
-		fprintf( stderr,"\noriginal_host is %s\n",original_host);
 		localhost_server = gethostbyname(original_host);
 	}
 	else
