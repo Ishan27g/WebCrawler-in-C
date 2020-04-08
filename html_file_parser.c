@@ -1,6 +1,8 @@
 
 #include "html_file_parser.h"
 
+extern char* original_host;
+
 void* free_ptr(void* ptr)
 {
 	if(ptr)
@@ -20,7 +22,7 @@ int match_host(char* href_host)
 	char* hostname_copy = (char*)malloc(strlen("web1.comp30023"));
 
 	strcpy(href_copy, href_host);
-	strcpy(hostname_copy,"web1.comp30023");
+	strcpy(hostname_copy, original_host);
 	char* ho = strstr(hostname_copy,".");
 	char* hr = strstr(href_copy,".");
 	if (strcmp(ho, hr) == 0)
