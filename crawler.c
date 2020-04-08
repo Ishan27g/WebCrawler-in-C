@@ -59,8 +59,12 @@ int main(int argc, char **argv)
 	memset(resource,'\0',len);
 	parse_input(argv[1]);
 	resource[strlen(resource)]='\0';	
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+	fprintf( stderr,"\nog host is %s\n", original_host);
 	fprintf( stderr,"\nresource is %s\n", resource);
-	fprintf( stderr,"\nhost is %s\n", original_host);
 
 //#ifndef VM_DEBUG_ON
 	client_socket = initialise_socket("");
@@ -101,14 +105,17 @@ int main(int argc, char **argv)
 	strcpy(crawler.href_url[0].hostname, original_host); 
 	crawler.href_url[0].visited = true;
 	crawler.href_url_count++;
+	fprintf(stderr,"\nLink Crawled:\ncrawler.href_url[%d].resource_filename : %s",0,crawler.href_url[0].resource_filename);
+	fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",0,crawler.href_url[0].hostname);
 
+
+	fprintf(stderr,"\nreading file for valid urls\n");
 //while this count is less than 100
 	href_count = read_file(HTML_FILE_LOCAL);
+	fprintf(stderr,"\nAfter reading file for valid urls, crawler.href_url_count is %d\n",crawler.href_url_count);
 	int visited_count = crawler.href_url_count;
 	//now file is useles, valid content copied to crawler_obj, can delete
 	fprintf(stderr,"\ninitial values read : %d\n",href_count);
-	fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",0,crawler.href_url[0].resource_filename);
-	fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",0,crawler.href_url[0].hostname);
 	fprintf(stderr,"\nNow crawling following links:------------------");
 //	int socket = initialise_socket();
 	for(i=1;i<href_count;i++)
@@ -118,6 +125,7 @@ int main(int argc, char **argv)
 			
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
+		printf("\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
 		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
 		close(client_socket);
 
@@ -136,7 +144,6 @@ int main(int argc, char **argv)
 		{
 			fprintf(stderr,"\ncontent type is not text/html\n");
 		}
-		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
 	printf("\nfinal href_count %d\nVisited the following\n",href_count);

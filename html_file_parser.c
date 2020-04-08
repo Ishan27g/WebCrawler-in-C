@@ -407,9 +407,10 @@ int read_file(char* filename)
 	size_t len = 512;
 	char full_line[len];
 	char full_line_copy[len];
- 	Web_crawler* crawler_obj = &crawler;
+// 	Web_crawler* crawler_obj = &crawler;
 	int index = crawler.href_url_count;//add data to last valid index
 
+	fprintf(stderr,"\ncrawler.href_url_count is %d\n",crawler.href_url_count);
 	if(!file)
 	{
 		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
@@ -424,17 +425,19 @@ int read_file(char* filename)
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
 				strcpy(full_line_copy, full_line);
-				if(extract_href_url(full_line_copy, &crawler_obj->href_url[index]) 
+				if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
 						== true)
 				{	
+					fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+					crawler.href_url[index].visited = true;
 					index++;
-					crawler_obj->href_url[index].visited = true;
 				}
 				else
 				{
-					memset(&(crawler_obj->href_url[index]).resource_filename,'\0', 512);
-					memset(&(crawler_obj->href_url[index]).hostname,'\0', 32);
-					crawler_obj->href_url[index].visited = false;
+					fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+					memset(crawler.href_url[index].resource_filename,'\0', 512);
+					memset(crawler.href_url[index].hostname,'\0', 32);
+					crawler.href_url[index].visited = false;
 				}
 			}
 		}
