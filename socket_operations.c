@@ -17,11 +17,11 @@ int initialise_socket(char* crawling_host)
 	}
 	else
 	{
-#ifdef VM_DEBUG_ON
-		localhost_server = gethostbyname("localhost");
-#else
+//#ifdef VM_DEBUG_ON
+//		localhost_server = gethostbyname("localhost");
+//#else
 		localhost_server = gethostbyname(crawling_host);
-#endif
+//#endif
 	}
 	if(!localhost_server)
 	{
@@ -93,7 +93,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
         }
         /* Receiving file size */
-	len = recv(client_socket, buffer, 512, 0);
+	//len = recv(client_socket, buffer, 512, 0);
+	len =read(client_socket, buffer, sizeof(buffer)-1);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
 	//http_head = malloc(sizeof(Http_header) + 512);
@@ -132,13 +133,13 @@ int send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 	
-#ifndef VM_DEBUG_ON
+//#ifndef VM_DEBUG_ON
 	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)
 	{
 		fprintf( stderr,"\nContent type is not text/html\n");
 		return 0;
 	}
-#endif
+//#endif
 #if 0
 	while(data_remaining >0)
 	{

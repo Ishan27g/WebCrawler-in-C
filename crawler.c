@@ -62,12 +62,12 @@ int main(int argc, char **argv)
 	fprintf( stderr,"\nresource is %s\n", resource);
 	fprintf( stderr,"\nhost is %s\n", original_host);
 
-#ifndef VM_DEBUG_ON
+//#ifndef VM_DEBUG_ON
 	client_socket = initialise_socket("");
-#else
-	client_socket = initialise_socket("localhost");
-	strcpy(original_host, "web1.comp30023");
-#endif
+//#else
+//	client_socket = initialise_socket("localhost");
+//	strcpy(original_host, "web1.comp30023");
+//#endif
 	if(client_socket == 0)
 	{
 		fprintf( stderr,"\nsocket not initialised\n");
