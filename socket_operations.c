@@ -143,6 +143,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	{
 		int rec =0;
 		rec = recv(client_socket, buffer, 512, 0);
+		fwrite(buffer, sizeof(char), rec, received_file);
 		data_remaining -= rec;
 	}
 /*	if(strlen(html_content) > 0)
