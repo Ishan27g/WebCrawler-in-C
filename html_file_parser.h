@@ -4,6 +4,6 @@
 
 #include "crawler.h"
 
-int read_file(char* filename, Web_crawler* crawler_obj);
+int read_file(char* filename);
 
 #endif

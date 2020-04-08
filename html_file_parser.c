@@ -2,6 +2,7 @@
 #include "html_file_parser.h"
 
 extern char* original_host;
+extern Web_crawler crawler;
 
 void* free_ptr(void* ptr)
 {
@@ -10,6 +11,23 @@ void* free_ptr(void* ptr)
 	ptr = NULL;
 	return NULL;
 }
+
+int lookup_duplicate_page(char* pagename)
+{
+	int i=0;
+	for(i=0; i < crawler.href_url_count; i++)
+	{
+		if(strcmp(pagename, crawler.href_url[i].resource_filename) == 0)
+		{
+			fprintf(stderr,"\n#########@@@@@@@@@@@@@@@@@@@###############\n");
+			fprintf(stderr,"\n#########@@@@@@@@@@@@@@@@@@@###############\n");
+			fprintf(stderr,"\nduplicate resource %s and %s\n",pagename, crawler.href_url[i].resource_filename);
+			return 0;
+		}
+	}
+	return 1;
+}
+
 
 int match_host(char* href_host)
 {
@@ -69,7 +87,8 @@ bool extract(char* source_string, Href_url* href_url_element)
 	//tokenise with 1st quotation char
 	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
 	strcpy(source_string_copy, components);
-	
+
+	int ret = 0;	
 	int dots = count_dots(components);
 	
 //	components = strtok_r(source_string_copy, "\"", &dest_temp);
@@ -91,6 +110,12 @@ bool extract(char* source_string, Href_url* href_url_element)
 		//since resource, no need to VALIDATE URL------------- BEFORE ADDING??
 
 		strncpy(href_url_element->resource_filename, components, strlen(components));
+
+		ret = lookup_duplicate_page(href_url_element->resource_filename);
+		if(ret ==1)
+			return true;
+		else
+			return false;
 	}
 	if(dots == 2)
 	{
@@ -104,7 +129,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 		components = strtok_r(source_string_copy, "/", &dest_temp);
 
 		
-		int ret = 1;//match_host(components);
+		ret = match_host(components);
 		if(ret == 0)
 		{
 			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
@@ -117,7 +142,11 @@ bool extract(char* source_string, Href_url* href_url_element)
 		strncpy(href_url_element->resource_filename, components, strlen(components));
 		free_ptr(source_string_copy);
 		free_ptr(source_string_copy_dots);
-		return true;
+		ret = lookup_duplicate_page(href_url_element->resource_filename);
+		if(ret ==1)
+			return true;
+		else
+			return false;
 	}
 	free_ptr(source_string_copy);
 	free_ptr(source_string_copy_dots);
@@ -238,12 +267,13 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	return false;
 }
 
-int read_file(char* filename, Web_crawler* crawler_obj)
+int read_file(char* filename)
 {
 	FILE* file = fopen(HTML_FILE_LOCAL, "r"); /* should check the result */
 	size_t len = 512;
 	char full_line[len];
 	char full_line_copy[len];
+ 	Web_crawler* crawler_obj = &crawler;
 	int index = crawler_obj->href_url_count;//add data to last valid index
 
 	if(!file)
