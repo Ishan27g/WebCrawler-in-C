@@ -15,7 +15,7 @@ void* free_ptr(void* ptr)
 int lookup_duplicate_page(char* pagename)
 {
 	int i=0;
-	for(i=0; i <= crawler.href_url_count; i++)
+	for(i=0; i < crawler.href_url_count; i++)
 	{
 		if(strcmp(pagename, crawler.href_url[i].resource_filename) == 0)
 		{

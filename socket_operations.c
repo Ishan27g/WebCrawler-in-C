@@ -103,7 +103,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	html_content = calloc(len, sizeof(char));
 
 	get_http_header(buffer, &http_head, html_content);
-//	fprintf(stderr,"\nhtml content is \n%s\n\n",html_content);
+	fprintf(stderr,"\nhtml content is \n%s\n",html_content);
 	
 	int data_received = len;
 	int html_data_received_initially = (len > http_head.http_content_length) ? 
