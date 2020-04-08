@@ -44,6 +44,7 @@ int match_host(char* href_host)
 	strcpy(hostname_copy, original_host);
 	char* ho = strstr(hostname_copy,".");
 	char* hr = strstr(href_copy,".");
+	fprintf(stderr,"\ncomparing hosts %s and %s\n",ho,hr);
 	if (strcmp(ho, hr) == 0)
 		return 1;
 	else
@@ -186,7 +187,7 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 		{
 			if(strncmp(source_string, "//",2) == 0)
 			{
-				strncpy(save_ptr, source_string + 2, strlen(source_string));
+				strcpy(save_ptr, source_string + 2);
 			}
 			else
 			{
@@ -212,6 +213,27 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 
 	char* ptr = NULL;
 	char* save_ptr = NULL;
+	ptr = check_tag(source_string,"href=");
+	if(ptr)
+	{	
+		save_ptr = (char*) malloc(512);
+		if(!save_ptr)
+		{
+			fprintf(stderr,"\nmalloc failed\n");
+			return false;
+		}
+		strcpy(save_ptr, ptr + strlen("href="));
+		if(extract_url(save_ptr, href_url_element) == true)
+		{
+			free_ptr(save_ptr);
+			return true;
+		}
+		else
+		{
+			free_ptr(save_ptr);
+			return false;
+		}
+	}
 	ptr = check_tag(source_string,"href =");
 	if(ptr)
 	{
@@ -222,6 +244,50 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("href ="));
+		if(extract_url(save_ptr, href_url_element) == true)
+		{
+			free_ptr(save_ptr);
+			return true;
+		}
+		else
+		{
+			free_ptr(save_ptr);
+			return false;
+		}
+	}
+	ptr = NULL;
+	ptr = check_tag(source_string,"href = ");
+	if(ptr)
+	{
+		save_ptr = (char*) malloc(512);
+		if(!save_ptr)
+		{
+			fprintf(stderr,"\nmalloc failed\n");
+			return false;
+		}
+		strcpy(save_ptr, ptr + strlen("href = "));
+		if(extract_url(save_ptr, href_url_element) == true)
+		{
+			free_ptr(save_ptr);
+			return true;
+		}
+		else
+		{
+			free_ptr(save_ptr);
+			return false;
+		}
+	}
+	ptr = NULL;
+	ptr = check_tag(source_string,"href= ");
+	if(ptr)
+	{	
+		save_ptr = (char*) malloc(512);
+		if(!save_ptr)
+		{
+			fprintf(stderr,"\nmalloc failed\n");
+			return false;
+		}
+		strcpy(save_ptr, ptr + strlen("href= "));
 		if(extract_url(save_ptr, href_url_element) == true)
 		{
 			free_ptr(save_ptr);
@@ -256,16 +322,60 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		}
 	}
 	ptr = NULL;
-	ptr = check_tag(source_string,"href=");
+	ptr = check_tag(source_string,"HREF =");
 	if(ptr)
-	{	
+	{
 		save_ptr = (char*) malloc(512);
 		if(!save_ptr)
 		{
 			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
-		strcpy(save_ptr, ptr + strlen("href="));
+		strcpy(save_ptr, ptr + strlen("HREF ="));
+		if(extract_url(save_ptr, href_url_element) == true)
+		{
+			free_ptr(save_ptr);
+			return true;
+		}
+		else
+		{
+			free_ptr(save_ptr);
+			return false;
+		}
+	}
+	ptr = NULL;
+	ptr = check_tag(source_string,"HREF = ");
+	if(ptr)
+	{
+		save_ptr = (char*) malloc(512);
+		if(!save_ptr)
+		{
+			fprintf(stderr,"\nmalloc failed\n");
+			return false;
+		}
+		strcpy(save_ptr, ptr + strlen("HREF = "));
+		if(extract_url(save_ptr, href_url_element) == true)
+		{
+			free_ptr(save_ptr);
+			return true;
+		}
+		else
+		{
+			free_ptr(save_ptr);
+			return false;
+		}
+	}
+	ptr = NULL;
+	ptr = check_tag(source_string,"HREF= ");
+	if(ptr)
+	{
+		save_ptr = (char*) malloc(512);
+		if(!save_ptr)
+		{
+			fprintf(stderr,"\nmalloc failed\n");
+			return false;
+		}
+		strcpy(save_ptr, ptr + strlen("HREF= "));
 		if(extract_url(save_ptr, href_url_element) == true)
 		{
 			free_ptr(save_ptr);
