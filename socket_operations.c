@@ -42,7 +42,7 @@ int initialise_socket()
         }
 	return client_socket;
 }
-void* send_receive_socket_data(int client_socket, char* resource)
+void* send_receive_socket_data(int client_socket, char* resource, int count)
 {
 	char request_str[512];
         int len;
@@ -76,8 +76,9 @@ void* send_receive_socket_data(int client_socket, char* resource)
 	{
 		fprintf( stderr,"\nSent request\n\n %s\n", request_str);
 	}
-	
-	received_file = fopen(HTML_FILE_LOCAL, "w");
+	char local_file[32];
+	sprintf(local_file, "%s_%d", HTML_FILE_LOCAL, count);
+	received_file = fopen(local_file, "w");
         if (received_file == NULL)
         {
 		fprintf( stderr,"Failed to open local file");

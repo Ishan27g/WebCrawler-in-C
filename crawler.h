@@ -27,12 +27,13 @@
 #define HTML_FILE_LOCAL "local_html_file.html"
 #define MAX_URL_STR_LEN 256
 #define QUEUE_SIZE 256
-typedef struct Web_crawler_struct{
+
+/*typedef struct Web_crawler_struct{
 	char *visited_url[100];
 	int visit[100];
 	int visited_count;
 }Web_crawler;
-
+*/
 
 #endif //CRAWLR_H
  
