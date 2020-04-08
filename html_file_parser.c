@@ -91,6 +91,13 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, components);
 	fprintf(stderr,"\nbefore copying %s\n",source_string_copy);
 
+	if(source_string_copy == NULL)
+	{
+		components = strstr(source_string, "\"//");
+		strcpy(source_string_copy, components+1);
+		fprintf(stderr,"\ncopied %s\n",source_string_copy);
+	}
+
 	int ret = 0;	
 	int dots = count_dots(components);
 	
