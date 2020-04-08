@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	resource = malloc(len);
 	memset(resource,'\0',len);
 	parse_input(argv[1]);
-	resource[strlen(resource)]='\0';	
+	resource[strlen(resource) - 1]='\0';	
 	fprintf( stderr,"\nresource is %s\n", resource);
 	fprintf( stderr,"\nhost is %s\n", original_host);
 

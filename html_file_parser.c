@@ -184,7 +184,14 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 		}
 		else
 		{
-			strncpy(save_ptr, source_string, strlen(source_string));
+			if(strncmp(source_string, "//",2) == 0)
+			{
+				strncpy(save_ptr, source_string + 2, strlen(source_string));
+			}
+			else
+			{
+				strncpy(save_ptr, source_string, strlen(source_string));
+			}
 		}
 	}
 	if(extract(save_ptr, href_url_element) == true)
