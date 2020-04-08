@@ -13,6 +13,7 @@ int parse_input(char* input)
 {
 	char* components, *dest_temp;
 	char* input_string;
+	input[strlen(input)]='\0';
 	char* http_present = strstr(input,"http://");
 	if(http_present == NULL)
 	{
@@ -34,9 +35,11 @@ int parse_input(char* input)
 		//string is in http://name.resource format
 		//char* host not points to name
 		input_string = malloc(strlen(input)-7);
-		strncpy(input_string, input+7, strlen(input)-7);
+		//strncpy(input_string, input+7, strlen(input)-7);
+		strcpy(input_string, input+7);
 		components = strtok_r(input_string, "/", &dest_temp);
 		strcpy(original_host, components);
+		printf("\n[%s]\n",dest_temp);
 		strcpy(resource, dest_temp);
 		free(input_string);
 	}
