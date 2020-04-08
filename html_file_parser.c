@@ -307,5 +307,5 @@ int read_file(char* filename)
 	}
 	fclose(file);
 	crawler_obj->href_url_count = index;
-	return crawler_obj->href_url_count;
+	return index;
 }
