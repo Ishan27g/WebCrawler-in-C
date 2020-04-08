@@ -1,29 +1,5 @@
 
-
-#include <errno.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-
-typedef struct Href_url_tag{
-	char resource_filename[512];
-	char hostname[32];
-	char local_file[32];
-	bool to_visit;
-}Href_url;
-
-typedef struct Web_crawler_struct{
-	Href_url href_url[100];
-	int href_url_count;
-	int visited_count;
-}Web_crawler;
+#include "html_file_parser.h"
 
 void* free_ptr(void* ptr)
 {
@@ -145,22 +121,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	free_ptr(source_string_copy_dots);
 	return false;
 }
-#if 0
-	/*
-	components = strtok_r(source_string_copy, ".", &dest_temp);
-	printf("\ncomponent is %s\n", components);
-	strncpy(href_url_element->hostname, components, strlen(components));
-	int counter=0;
-	do{
-		counter++;
-		printf("\ncomponent is %s\n", components);
-		if(counter == 2)
-			strncpy(href_url_element->resource_filename, components, strlen(components));
-	}while ((components = strtok_r(NULL, "\"", &dest_temp)) != NULL);
-	*/
-	return NULL;
-}
-#endif
+
 bool extract_url(char* source_string, Href_url* href_url_element)
 {
 	//printf("\nextract url for %s\n",source_string);
@@ -277,9 +238,12 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 	return false;
 }
 
-int read_file(char* filename, Web_crawler* crawler_obj)
+int read_file(char* filename, Web_crawler* crawler_obj, int count)
 {
-	FILE* file = fopen(filename, "r"); /* should check the result */
+	char f[32];
+	sprintf(f,"%s_%d",filename,count);
+//	printf("\nfile is %s and count is %d\n",f,count);
+	FILE* file = fopen(f, "r"); /* should check the result */
 	size_t len = 512;
 	char full_line[len];
 	char full_line_copy[len];
@@ -287,7 +251,7 @@ int read_file(char* filename, Web_crawler* crawler_obj)
 
 	if(!file)
 	{
-		printf("\nfailed to open %s\n",filename);
+		printf("\nfailed to open %s\n",f);
 		return 0;
 	}
 	while(fgets(full_line, 512, file)) {
@@ -314,10 +278,11 @@ int read_file(char* filename, Web_crawler* crawler_obj)
 		}
 		memset(full_line,'\0',512);
 	}
+	fclose(file);
 	crawler_obj->href_url_count = index;
 	return crawler_obj->href_url_count;
 }
-
+#if 0
 int main(int argc, char **argv)
 {
 	Web_crawler crawler;
@@ -351,7 +316,7 @@ int main(int argc, char **argv)
 		
 //		send_receive_socket_data(socket, crawler.href_url[i].resource_filename, i);
 
-		href_count = read_file("local_html_file_1.html", &crawler);
+		href_count = read_file("local_html_file_1.html", &crawler, i);
 		printf("\nat i= %d, href_count is now %d\n",i,href_count);
 
 
@@ -369,3 +334,4 @@ int main(int argc, char **argv)
 	
 	return 0;
 }
+#endif

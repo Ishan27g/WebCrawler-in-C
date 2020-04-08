@@ -74,7 +74,7 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 			if(!string_copy)
 			{
 				fprintf(stderr,"\nmalloc failed\n");
-				return;
+				return NULL;
 			}
 			strcpy(string_copy, dest_string);
 			fill_http_header(string_copy, dest);
