@@ -155,9 +155,11 @@ int send_receive_socket_data(int client_socket, char* resource)
 		       	html_data_received_initially,http_head.http_content_length);
 
 
-	int data_remaining = http_head.http_content_length > html_data_received_initially ? (http_head.http_content_length - html_data_received_initially) : 0;
-	fprintf(stderr,"\ndata_remaining = %d\n",data_remaining);
+//	int data_remaining = http_head.http_content_length > html_data_received_initially ? (http_head.http_content_length - html_data_received_initially) : 0;
 
+
+	int data_remaining = len > http_head.http_content_length? 0: http_head.http_content_length - len;
+	fprintf(stderr,"\ndata_remaining = %d\n",data_remaining);
 
 
 	if(http_head.http_version)
@@ -205,9 +207,14 @@ int send_receive_socket_data(int client_socket, char* resource)
 		len = recv(client_socket, buffer, 512, 0);
 		len1+=len;
 		if(len == 0)
+		{
 			continue;
+		}
+		else
+		{
+			fwrite(buffer, sizeof(char), len, received_file);
+		}
 		data_remaining = data_remaining - len;
-		fwrite(buffer, sizeof(char), len, received_file);
 	}
 
 	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len1);
