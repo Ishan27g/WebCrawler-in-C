@@ -236,6 +236,18 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	fprintf(stderr,"\n**** writing initial data to file of len %d****\n",len1);
 	//while(data_remaining > 0)
 	memset(buffer,'\0',1000);
+
+
+	if(data_remaining > 0)
+	{
+		len = recv(client_socket, buffer, 512, 0);
+		if(len > 0)
+		{
+			len1 = fwrite(buffer, sizeof(char), len, received_file);
+		}
+	}
+
+
 /*	while(len > 0)
 	{
 		len = recv(client_socket, buffer, 512, 0);
@@ -250,7 +262,7 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 		//data_remaining = data_remaining - len;
 	}
 */
-//	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len);
+	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len1);
 
         fclose(received_file);
 	return 1;
