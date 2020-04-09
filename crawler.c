@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <pthread.h>
 #include "html_file_parser.h"
@@ -82,9 +81,9 @@ int main(int argc, char **argv)
 	}
 	
 	/*send request and recieve valid text/html resource*/
-	int ret = send_receive_socket_data(client_socket, resource);
+	int ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG);
         close(client_socket);
-	if(ret == 2)
+	if(ret == HTTP_RSP_504_GW_TIMEOUT)
 	{
 		sleep(1);
 		client_socket = initialise_socket("");
@@ -97,7 +96,7 @@ int main(int argc, char **argv)
 		}
 		fprintf(stderr,"\nSending request.again...for....resource = %s\n",resource);
 		/*send request again and recieve valid text/html resource*/
-		ret = send_receive_socket_data(client_socket, resource);
+		ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -119,11 +118,8 @@ int main(int argc, char **argv)
 			return 0;
 		}
 		/*send request again and recieve valid text/html resource*/
-		char *auth =(char*) malloc(512);
-		sprintf(auth,"%s %s",resource,HTTP_AUTH_STR);
-		fprintf(stderr,"\nSending auth request...for....resource = %s\n",auth);
-		ret = send_receive_socket_data(client_socket,auth);
-		free(auth);
+		fprintf(stderr,"\nSending auth request...for....resource = %s\n",resource);
+		ret = send_receive_socket_data(client_socket, resource, HTTP_RSP_401_NOT_AUTH);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -145,7 +141,7 @@ int main(int argc, char **argv)
 		}
 		fprintf(stderr,"\nSending 301 request...for....resource = %s\n",http_extension.http_location);
 		/*send request again and recieve valid text/html resource*/
-		ret = send_receive_socket_data(client_socket, http_extension.http_location);
+		ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -200,16 +196,16 @@ int main(int argc, char **argv)
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
 		fprintf(stderr,"\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
-		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
+		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG);
 		close(client_socket);
-		if( ret == 2)
+		if( ret == HTTP_RSP_504_GW_TIMEOUT)
 		{
 			fprintf(stderr,"\nretrying again\n");
 			sleep(1);
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
-			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
+			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG);
 			close(client_socket);
 		}
 

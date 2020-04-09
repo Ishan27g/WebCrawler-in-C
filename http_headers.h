@@ -21,6 +21,7 @@ enum http_rsp_code{
 	HTTP_RSP_404_NOT_FOUND,
 	HTTP_RSP_401_NOT_AUTH,
 	HTTP_RSP_301_MOVED_PERM,
+	HTTP_REQ_FLAG
 };
 
 typedef struct Http_extension{

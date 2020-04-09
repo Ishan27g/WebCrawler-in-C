@@ -93,7 +93,7 @@ int initialise_socket(char* crawling_host)
         }
 	return client_socket;
 }
-int send_receive_socket_data(int client_socket, char* resource)
+int send_receive_socket_data(int client_socket, char* resource, int flag)
 {
 	char deletethis[1024];
 
@@ -107,19 +107,21 @@ int send_receive_socket_data(int client_socket, char* resource)
 	Http_header http_head;
 	if(resource == NULL)
 	{
-		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
 		memset(request_str,'\0',1024);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
-//		request_str[strlen(request_str)] = '\0';
-//		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
 	}
 	else
 	{
-		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
-		memset(request_str,'\0',1024);
-		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
-//		request_str[strlen(request_str)] = '\0';
-//		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
+		if(flag == HTTP_RSP_401_NOT_AUTH)
+		{
+			memset(request_str,'\0',1024);
+			sprintf(request_str,"GET /%s %s",resource, HTTP_AUTH_STR);
+		}
+		else
+		{
+			memset(request_str,'\0',1024);
+			sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
+		}
 	}
 	n = write(client_socket, request_str, strlen(request_str));
 	if( n<0)
@@ -184,7 +186,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		case HTTP_RSP_503_SERVICE_UNAVAILABLE:
 		case HTTP_RSP_504_GW_TIMEOUT:
 			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable, retrying+------+++++------++\n[%s]",deletethis);
-			return 2;//retry after
+			return HTTP_RSP_504_GW_TIMEOUT;//retry after
 		case HTTP_RSP_200_SUCCESS:
 			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
 			break;
@@ -239,3 +241,4 @@ int send_receive_socket_data(int client_socket, char* resource)
         fclose(received_file);
 	return 1;
 }
+
