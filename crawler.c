@@ -212,13 +212,26 @@ int main(int argc, char **argv)
 		if(ret == 1)
 		{
 			href_count = read_file(HTML_FILE_LOCAL);
-			//visited_count++;
-			//adding next valid url to consequent index of crawler
-			//and updated href_count as well as for loop 
-			//
-			//handling for response codes
-			//
-			//delete the files also, can add file pointer variable to crawler_obj
+		}
+		else if(ret == HTTP_RSP_401_NOT_AUTH)
+		{
+			fprintf(stderr,"\nretrying again\n");
+			sleep(1);
+			client_socket = initialise_socket(crawler.href_url[i].hostname);
+			ret = 0;
+			fprintf(stderr,"\nSending auth request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
+			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_RSP_401_NOT_AUTH);
+			close(client_socket);
+		}
+		else if(ret == HTTP_RSP_301_MOVED_PERM)
+		{
+			fprintf(stderr,"\nretrying again\n");
+			sleep(1);
+			client_socket = initialise_socket(crawler.href_url[i].hostname);
+			ret = 0;
+			fprintf(stderr,"\nSending auth request for [%d]... again ....resource_filename = %s\n",i, http_extension.http_location);
+			ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG);
+			close(client_socket);
 		}
 		else
 		{
