@@ -75,22 +75,6 @@ char* check_tag(char* string, char* token)
 {
 	return strstr(string,token);
 }
-int check_if_only_filename(char* source_string)
-{
-	char *components = malloc(strlen(source_string));
-	strcpy(components, source_string);
-	if(strstr(components,"html") == NULL)
-	{
-		return 0;
-	}
-	int dots = count_dots(components);
-	if(dots == 1)
-	{
-		fprintf(stderr,"\nresource is a relative file\n");
-		return 1;
-	}
-	return 0;
-}
 
 bool extract(char* source_string, Href_url* href_url_element)
 {
@@ -111,8 +95,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 	int dots;
 
 
-	//	if(check_if_only_filename(source_string) != 1)
-	//	{
 	components = strstr(source_string_copy, "\"//");
 	if(components)
 	{
@@ -144,6 +126,8 @@ bool extract(char* source_string, Href_url* href_url_element)
 	if(dots == 1)
 	{
 		/*it is a relative resource file*/
+
+		strncpy(href_url_element->hostname, original_host, strlen(original_host));
 
 		//since resource, no need to VALIDATE URL------------- BEFORE ADDING??
 		if(strstr(components, "/") == NULL)
