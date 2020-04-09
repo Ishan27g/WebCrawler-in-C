@@ -6,9 +6,8 @@
 #include "socket_operations.h"
 char* original_host;
 char* resource;
-
 Web_crawler crawler;
-
+Http_extension http_extension;
 int parse_input(char* input)
 {
 	char* components, *dest_temp;
@@ -89,10 +88,6 @@ int main(int argc, char **argv)
 	{
 		sleep(1);
 		client_socket = initialise_socket("");
-		//#else
-		//	client_socket = initialise_socket("localhost");
-		//	strcpy(original_host, "web1.comp30023");
-		//#endif
 		if(client_socket == 0)
 		{
 			fprintf( stderr,"\nsocket not initialised\n");
@@ -103,6 +98,28 @@ int main(int argc, char **argv)
 		fprintf(stderr,"\nSending request.again...for....resource = %s\n",resource);
 		/*send request again and recieve valid text/html resource*/
 		ret = send_receive_socket_data(client_socket, resource);
+		close(client_socket);
+		if(ret != 1)
+		{
+			free(original_host);
+			free(resource);
+			return 0;
+		}
+	}
+	if(ret == HTTP_RSP_301_MOVED_PERM)
+	{
+		sleep(1);
+		client_socket = initialise_socket("");
+		if(client_socket == 0)
+		{
+			fprintf( stderr,"\nsocket not initialised\n");
+			free(original_host);
+			free(resource);
+			return 0;
+		}
+		fprintf(stderr,"\nSending 301 request...for....resource = %s\n",http_extension.http_location);
+		/*send request again and recieve valid text/html resource*/
+		ret = send_receive_socket_data(client_socket, http_extension.http_location);
 		close(client_socket);
 		if(ret != 1)
 		{

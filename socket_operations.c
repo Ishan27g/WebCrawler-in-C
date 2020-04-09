@@ -3,6 +3,7 @@
 
 
 extern char* original_host;
+extern Http_extension http_extension;
 
 int validate_rsp_code(char* http_rsp_code)
 {
@@ -31,6 +32,10 @@ int validate_rsp_code(char* http_rsp_code)
 	if(strstr(http_rsp_code, "504") != NULL)
 	{
 		return HTTP_RSP_504_GW_TIMEOUT;
+	}
+	if(strstr(http_rsp_code, "301") != NULL)
+	{
+		return HTTP_RSP_301_MOVED_PERM;
 	}
 	else
 		return 100;	
@@ -178,8 +183,11 @@ int send_receive_socket_data(int client_socket, char* resource)
 			return 2;//retry after
 		case HTTP_RSP_200_SUCCESS:
 			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
-			break;
-		case HTTP_RSP_504_GW_TIMEOUT:
+			return HTTP_RSP_200_SUCCESS;
+		case HTTP_RSP_301_MOVED_PERM:
+			strncpy(http_extension.http_location, http_head.http_location, strlen(http_head.http_location));
+			fprintf(stderr,"\n-----+++++++++-----+++++301 moved rsp+------+++++------++[%s]\n",http_extension.http_location);
+			return HTTP_RSP_301_MOVED_PERM;
 		case HTTP_RSP_414_REQ_URI_LONG:
 		case HTTP_RSP_410_PERM_GONE:
 		case HTTP_RSP_404_NOT_FOUND:

@@ -34,6 +34,7 @@ typedef struct Href_url_tag{
 	char hostname[32];
 	bool visited;
 }Href_url;
+
 typedef struct Web_crawler_struct{
 	Href_url href_url[100];
 	int href_url_count;
