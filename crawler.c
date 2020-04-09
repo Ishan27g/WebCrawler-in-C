@@ -141,21 +141,27 @@ int main(int argc, char **argv)
 		fprintf(stderr,"\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
 		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
 		close(client_socket);
+		if( ret == 2)
+		{
+			fprintf(stderr,"\nretrying again after 5 seconds-\n");
+			sleep(5);
+			client_socket = initialise_socket(crawler.href_url[i].hostname);
+			ret = 0;
+			fprintf(stderr,"\nSending request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
+			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename);
+			close(client_socket);
+		}
 
 		if(ret == 1)
 		{
 			href_count = read_file(HTML_FILE_LOCAL);
 			//visited_count++;
-		//adding next valid url to consequent index of crawler
-		//and updated href_count as well as for loop 
-		//
-		//handling for response codes
-		//
-		//delete the files also, can add file pointer variable to crawler_obj
-		}
-		if( ret == 2)
-		{
-			fprintf(stderr,"\nretry after-\n");
+			//adding next valid url to consequent index of crawler
+			//and updated href_count as well as for loop 
+			//
+			//handling for response codes
+			//
+			//delete the files also, can add file pointer variable to crawler_obj
 		}
 		else
 		{
