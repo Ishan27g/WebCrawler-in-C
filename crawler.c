@@ -53,16 +53,26 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	original_host = NULL;
-	original_host = malloc(512);
-	memset(original_host,'\0',512);
-	resource = malloc(512);
-	memset(resource,'\0',512);
+	original_host = malloc(strlen(argv[1]));
+	memset(original_host,'\0',strlen(argv[1]));
+	resource = malloc(strlen(argv[1]));
+
+	memset(resource,'\0',strlen(argv[1]));
 	parse_input(argv[1]);
 	resource[strlen(resource)]='\0';	
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
+
+//	strcat(resource," ");
+
+//	fprintf( stderr,"\nresource is [%s]\n", resource);
+	if( resource[strlen(resource)-1] == ' ')
+	{
+		resource[strlen(resource)-1]='\0';
+		fprintf( stderr,"\nresource is [%s]\n", resource);
+	}
 	fprintf( stderr,"\nog host is [%s]\n", original_host);
 	fprintf( stderr,"\nresource is [%s]\n", resource);
 
