@@ -200,8 +200,9 @@ int send_receive_socket_data(int client_socket, char* resource)
 	fprintf(stderr,"\nContent type and status valid.............\n");
 	int len1 = fwrite(html_content, sizeof(char), len, received_file);
 	fprintf(stderr,"\n**** writing initial data to file of len %d****\n",len1);
-	len = 0;
-	while(data_remaining > 0)
+	//while(data_remaining > 0)
+	memset(buffer,'\0',1000);
+	while(len > 0)
 	{
 		len = recv(client_socket, buffer, 512, 0);
 		if(len < 0)
@@ -210,7 +211,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		}
 		else
 		{
-			len1 +=	fwrite(buffer, sizeof(char), data_remaining, received_file);
+			len1 +=	fwrite(buffer, sizeof(char), len, received_file);
 		}
 		data_remaining = data_remaining - len;
 	}

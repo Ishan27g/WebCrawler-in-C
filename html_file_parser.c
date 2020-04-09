@@ -452,31 +452,34 @@ int read_file(char* filename)
 //		if(strlen(full_line) > 0)
 //		{
 //			fprintf(stderr,"\nline is [%s]",full_line);
-			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
+			if(strstr(full_line, ".html") != NULL)
 			{
-				if(strlen(full_line) > (strlen("<a href=\"//") + strlen(".html") + 1))
+				if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 				{
-
-					strcpy(full_line_copy, full_line);
-					fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
-					if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
-							== true)
-					{	
-						fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-						fprintf(stderr,"\n%d\n",__LINE__);
-						crawler.href_url[index].visited = true;
-						fprintf(stderr,"\n%d\n",__LINE__);
-						index++;
-						fprintf(stderr,"\n%d\n",__LINE__);
-						crawler.href_url_count++;
-						fprintf(stderr,"\n%d\n",__LINE__);
-					}
-					else
+					if(strlen(full_line) > (strlen("<a href=\"//") + strlen(".html") + 1))
 					{
-						fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-						memset(crawler.href_url[index].resource_filename,'\0', 1024);
-						memset(crawler.href_url[index].hostname,'\0', 32);
-						crawler.href_url[index].visited = false;
+
+						strcpy(full_line_copy, full_line);
+						fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
+						if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
+								== true)
+						{	
+							fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+							fprintf(stderr,"\n%d\n",__LINE__);
+							crawler.href_url[index].visited = true;
+							fprintf(stderr,"\n%d\n",__LINE__);
+							index++;
+							fprintf(stderr,"\n%d\n",__LINE__);
+							crawler.href_url_count++;
+							fprintf(stderr,"\n%d\n",__LINE__);
+						}
+						else
+						{
+							fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+							memset(crawler.href_url[index].resource_filename,'\0', 1024);
+							memset(crawler.href_url[index].hostname,'\0', 32);
+							crawler.href_url[index].visited = false;
+						}
 					}
 				}
 			}
