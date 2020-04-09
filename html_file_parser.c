@@ -15,7 +15,7 @@ void* free_ptr(void* ptr)
 int lookup_duplicate_page(char* pagename)
 {
 	int i=0;
-	fprintf(stderr,"\ncrawler.href_url_count is %d\n",crawler.href_url_count);
+	fprintf(stderr,"\nwhile looking up,crawler.href_url_count is %d\n",crawler.href_url_count);
 	for(i=0; i < crawler.href_url_count; i++)
 	{
 		fprintf(stderr,"\ncomparing [%s] with [%s]\n",pagename, crawler.href_url[i].resource_filename);
@@ -89,7 +89,7 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
 	
-//	fprintf(stderr,"\nto extract %s\n",source_string);
+	fprintf(stderr,"\nto extract %s\n",source_string);
 		
 	components = strstr(source_string_copy, "\"//");
 	if(components)
@@ -410,7 +410,7 @@ int read_file(char* filename)
 // 	Web_crawler* crawler_obj = &crawler;
 	int index = crawler.href_url_count;//add data to last valid index
 
-	fprintf(stderr,"\ncrawler.href_url_count is %d\n",crawler.href_url_count);
+	fprintf(stderr,"\nbefore reading file, crawler.href_url_count is %d\n",crawler.href_url_count);
 	if(!file)
 	{
 		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
@@ -425,6 +425,7 @@ int read_file(char* filename)
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
 				strcpy(full_line_copy, full_line);
+				fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
 				if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
 						== true)
 				{	

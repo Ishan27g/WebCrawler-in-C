@@ -3,6 +3,37 @@
 
 extern char* original_host;
 
+int validate_rsp_code(char* http_rsp_code)
+{
+	if(strstr(http_rsp_code, "200") != NULL)
+	{
+		return HTTP_RSP_200_SUCCESS;
+	}	
+	if(strstr(http_rsp_code, "404") != NULL)
+	{
+		return HTTP_RSP_404_NOT_FOUND;
+	}	
+	if(strstr(http_rsp_code, "410") != NULL)
+	{
+		return HTTP_RSP_410_PERM_GONE;
+	}	
+	if(strstr(http_rsp_code, "414") != NULL)
+	{
+		return HTTP_RSP_414_REQ_URI_LONG;
+		//can be a redirected URI prefix that points to a suffix of itself
+	}	
+	if(strstr(http_rsp_code, "503") != NULL)
+	{
+		return HTTP_RSP_503_SERVICE_UNAVAILABLE;
+		//read Retry-After to retry after that much time
+	}	
+	if(strstr(http_rsp_code, "504") != NULL)
+	{
+		return HTTP_RSP_504_GW_TIMEOUT;
+	}
+	else
+		return 100;	
+}
 int initialise_socket(char* crawling_host)
 {
 	int client_socket;
@@ -121,6 +152,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	int data_remaining = http_head.http_content_length > len ? (http_head.http_content_length - len) : 0;
 	fprintf(stderr,"\ndata_remaining = %d\n",data_remaining);
 	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
+	fprintf(stderr,"\n**** writing initial data to file of len %d****\n", http_head.http_content_length);
 	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
 //	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER START________*******_______________\n");
@@ -133,10 +165,29 @@ int send_receive_socket_data(int client_socket, char* resource)
 	if(http_head.http_content_type)
 		fprintf(stderr,"\ncontent type is [%s]",http_head.http_content_type);
 	
+	int http_rsp_code = validate_rsp_code(http_head.http_rsp_code);
+//	int success = 
+	switch (http_rsp_code)
+	{	
+		case HTTP_RSP_503_SERVICE_UNAVAILABLE:
+			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable+------+++++------++\n");
+			return 2;//retry after
+		case HTTP_RSP_200_SUCCESS:
+			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
+			break;
+		case HTTP_RSP_504_GW_TIMEOUT:
+		case HTTP_RSP_414_REQ_URI_LONG:
+		case HTTP_RSP_410_PERM_GONE:
+		case HTTP_RSP_404_NOT_FOUND:
+		default:
+			fprintf(stderr,"\n-----+++++++++-----++++++page gone+------+++++------++\n");
+			return 0;
+	}
 //#ifndef VM_DEBUG_ON
 	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)
 	{
-		fprintf( stderr,"\nContent type is not text/html\n");
+		fprintf( stderr,"\nContent type is not text/html, not reading more data---- RETURNING----\n");
+		//dont parse data
 		return 0;
 	}
 //#endif
@@ -157,17 +208,19 @@ int send_receive_socket_data(int client_socket, char* resource)
 	}
 #endif
 	len = 0;
+	int len1=0;
 	while(data_remaining > 0)
 	{
-		fprintf(stderr,"\nreading more data.............\n");
+		fprintf(stderr,"\nContent type and status valid, reading more data.............\n");
 		len = recv(client_socket, buffer, 512, 0);
+		len1+=len;
 		if(len == 0)
 			continue;
 		data_remaining = data_remaining - len;
 		fwrite(buffer, sizeof(char), len, received_file);
 	}
 
-	fprintf(stderr,"\nfinished writing file\n");
+	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len1);
         fclose(received_file);
 	return 1;
 }

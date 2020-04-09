@@ -54,8 +54,6 @@ int main(int argc, char **argv)
 		fprintf( stderr,"\ninvalid input string\n");
 		return 0;
 	}
-	int len = strlen(argv[1]);
-	printf("\nlen is %d\n",len);
 	original_host = NULL;
 	original_host = malloc(512);
 	memset(original_host,'\0',512);
@@ -67,8 +65,8 @@ int main(int argc, char **argv)
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	fprintf(stderr,"\n*******____________*********___________*******_______________\n");
-	fprintf( stderr,"\nog host is %s\n", original_host);
-	fprintf( stderr,"\nresource is %s\n", resource);
+	fprintf( stderr,"\nog host is [%s]\n", original_host);
+	fprintf( stderr,"\nresource is [%s]\n", resource);
 
 //#ifndef VM_DEBUG_ON
 	client_socket = initialise_socket("");
@@ -79,6 +77,8 @@ int main(int argc, char **argv)
 	if(client_socket == 0)
 	{
 		fprintf( stderr,"\nsocket not initialised\n");
+		free(original_host);
+		free(resource);
 		return 0;
 	}
 	
@@ -88,11 +88,13 @@ int main(int argc, char **argv)
 	if(ret != 1)
 	{
 		fprintf(stderr,"\nCONTENT IS NOT TEXT/HTML\n");
+		free(original_host);
+		free(resource);
 		return 0;
 	}
 	int i=0;
 	int href_count = 0;
-		
+
 	crawler.href_url_count = 0;
 
 	for(i=0;i<100;i++)
@@ -113,15 +115,22 @@ int main(int argc, char **argv)
 	fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",0,crawler.href_url[0].hostname);
 
 
-	fprintf(stderr,"\nreading file for valid urls\n");
+	fprintf(stderr,"\n********reading file for valid urls\n");
 //while this count is less than 100
+//
+//alread crawled 1 valid url, read file will return number of valid url in vali that should be crawled
 	href_count = read_file(HTML_FILE_LOCAL);
 	fprintf(stderr,"\nAfter reading file for valid urls, crawler.href_url_count is %d\n",crawler.href_url_count);
-	int visited_count = crawler.href_url_count;
-	//now file is useles, valid content copied to crawler_obj, can delete
+	
+	
+	//int visited_count = crawler.href_url_count;
 	fprintf(stderr,"\ninitial values read : %d\n",href_count);
 	fprintf(stderr,"\nNow crawling following links:------------------");
 //	int socket = initialise_socket();
+	
+
+
+	//now file is useles, valid content copied to crawler_obj, can delete
 	for(i=1;i<href_count;i++)
 	{
 		fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
@@ -136,7 +145,7 @@ int main(int argc, char **argv)
 		if(ret == 1)
 		{
 			href_count = read_file(HTML_FILE_LOCAL);
-			visited_count++;
+			//visited_count++;
 		//adding next valid url to consequent index of crawler
 		//and updated href_count as well as for loop 
 		//
@@ -144,14 +153,18 @@ int main(int argc, char **argv)
 		//
 		//delete the files also, can add file pointer variable to crawler_obj
 		}
+		if( ret == 2)
+		{
+			fprintf(stderr,"\nretry after-\n");
+		}
 		else
 		{
-			fprintf(stderr,"\ncontent type is not text/html\n");
+			fprintf(stderr,"\nRsp code is not to be crawled\n");
 		}
 		fprintf(stderr,"\n*******____________*********___________*******_______________\n");
 	}
 	fprintf(stderr,"\nfinal href_count %d\nVisited the following\n",href_count);
-	
+#if 0	
 	for(i=0;i<href_count;i++)
 	{
 		if(crawler.href_url[i].visited == true)
@@ -161,6 +174,7 @@ int main(int argc, char **argv)
 			fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 		}
 	}
+#endif
 	free(original_host);
 	free(resource);
 	return 0;
