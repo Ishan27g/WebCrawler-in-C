@@ -75,6 +75,22 @@ char* check_tag(char* string, char* token)
 {
 	return strstr(string,token);
 }
+int check_if_only_filename(char* source_string)
+{
+	char *components = malloc(strlen(source_string));
+	strcpy(components, source_string);
+	if(strstr(components,"html") == NULL)
+	{
+		return 0;
+	}
+	int dots = count_dots(components);
+	if(dots == 1)
+	{
+		fprintf(stderr,"\nresource is a relative file\n");
+		return 1;
+	}
+	return 0;
+}
 
 bool extract(char* source_string, Href_url* href_url_element)
 {
@@ -82,15 +98,21 @@ bool extract(char* source_string, Href_url* href_url_element)
 	char* source_string_copy;
 	char* source_string_copy_dots;
 	char *components, *dest_temp;
-	
+
 	source_string_copy_dots = (char*) malloc(strlen(source_string));
 	source_string_copy = (char*) malloc(strlen(source_string));
-	
+
 	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
-	
+
 	fprintf(stderr,"\nto extract %s\n",source_string);
-		
+
+	int ret;	
+	int dots;
+
+
+	//	if(check_if_only_filename(source_string) != 1)
+	//	{
 	components = strstr(source_string_copy, "\"//");
 	if(components)
 	{
@@ -101,10 +123,13 @@ bool extract(char* source_string, Href_url* href_url_element)
 	//fprintf(stderr,"\ncopied %s\n",source_string_copy_dots);
 	//jump string pointer to point to start of url
 	//tokenise with 1st quotation char
-	int ret = 0;	
-	int dots = count_dots(components);
-	
-//	components = strtok_r(source_string_copy, "\"", &dest_temp);
+	dots = count_dots(components);
+	//	}
+	//	else
+	//	{
+	//		dots = count_dots(source_string);
+	//	}
+	//	components = strtok_r(source_string_copy, "\"", &dest_temp);
 	if(dots == 0)
 	{
 		/*relative path to no file*/
@@ -121,9 +146,14 @@ bool extract(char* source_string, Href_url* href_url_element)
 		/*it is a relative resource file*/
 
 		//since resource, no need to VALIDATE URL------------- BEFORE ADDING??
-
-		strncpy(href_url_element->resource_filename, components, strlen(components));
-
+		if(strstr(components, "/") == NULL)
+		{
+			sprintf(href_url_element->resource_filename,"%s.html",components);
+		}
+		else
+		{
+			strncpy(href_url_element->resource_filename, components, strlen(components));
+		}
 		ret = lookup_duplicate_page(href_url_element->resource_filename);
 		if(ret ==1)
 			return true;
@@ -432,6 +462,7 @@ int read_file(char* filename)
 					fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
 					crawler.href_url[index].visited = true;
 					index++;
+					crawler.href_url_count++;
 				}
 				else
 				{
