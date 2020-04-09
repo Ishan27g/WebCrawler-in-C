@@ -29,7 +29,7 @@
 #define QUEUE_SIZE 256
 
 typedef struct Href_url_tag{
-	char resource_filename[512];
+	char resource_filename[1024];
 	char hostname[32];
 	char local_file[32];
 	bool visited;

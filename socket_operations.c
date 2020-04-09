@@ -139,7 +139,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	memset(http_head.http_content_type,'\0',sizeof(http_head.http_content_type));
 	http_head.http_content_length = 0;
 	
-	memset(html_content,'\0',BUFSIZ);
+	memset(html_content,'\0',1024);
 
 	memset(deletethis,'\0',1024);
 	strncpy(deletethis, buffer, len);

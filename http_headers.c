@@ -67,7 +67,7 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 		printf("\nEmpty pointer passed\n");
 	}
 	char *dest_string, *dest_temp;
-	char string_copy[512];
+	char string_copy[1024];
 	dest_string = strtok_r(buffer, "<", &dest_temp);
 	sprintf(html_content, "<%s",dest_temp);
 	dest_temp = NULL;
@@ -75,7 +75,7 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 	do {
 		if(dest_string != NULL)
 		{
-			memset(string_copy, '\0', 512);
+			memset(string_copy, '\0', 1024);
 		       //	= malloc(strlen(dest_string));
 			strcpy(string_copy, dest_string);
 			fill_http_header(string_copy, dest);
