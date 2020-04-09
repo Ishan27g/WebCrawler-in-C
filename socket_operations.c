@@ -198,21 +198,19 @@ int send_receive_socket_data(int client_socket, char* resource)
 	}
 //#endif
 	fprintf(stderr,"\nContent type and status valid.............\n");
-	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
-	fprintf(stderr,"\n**** writing initial data to file of len %d****\n", http_head.http_content_length);
+	int len1 = fwrite(html_content, sizeof(char), len, received_file);
+	fprintf(stderr,"\n**** writing initial data to file of len %d****\n",len1);
 	len = 0;
-	int len1=0;
 	while(data_remaining > 0)
 	{
 		len = recv(client_socket, buffer, 512, 0);
-		len1+=len;
 		if(len == 0)
 		{
 			continue;
 		}
 		else
 		{
-			fwrite(buffer, sizeof(char), len, received_file);
+			len1 +=	fwrite(buffer, sizeof(char), len, received_file);
 		}
 		data_remaining = data_remaining - len;
 	}
