@@ -1,3 +1,4 @@
+#include <sys/stat.h>
 #include "socket_operations.h"
 
 
@@ -219,6 +220,12 @@ int send_receive_socket_data(int client_socket, char* resource)
 	}
 */
 //	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len);
+
+	struct stat st;
+	stat(HTML_FILE_LOCAL, &st);
+	int size = st.st_size;
+	fprintf(stderr,"\n****finished writing file of len : %d ****\n",size);
+
         fclose(received_file);
 	return 1;
 }
