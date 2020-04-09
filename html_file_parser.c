@@ -454,22 +454,26 @@ int read_file(char* filename)
 //			fprintf(stderr,"\nline is [%s]",full_line);
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
-				strcpy(full_line_copy, full_line);
-				fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
-				if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
-						== true)
-				{	
-					fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-					crawler.href_url[index].visited = true;
-					index++;
-					crawler.href_url_count++;
-				}
-				else
+				if(strlen(full_line) > (strlen("<a href=\"//") + strlen(".html") + 1))
 				{
-					fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-					memset(crawler.href_url[index].resource_filename,'\0', 512);
-					memset(crawler.href_url[index].hostname,'\0', 32);
-					crawler.href_url[index].visited = false;
+
+					strcpy(full_line_copy, full_line);
+					fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
+					if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
+							== true)
+					{	
+						fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+						crawler.href_url[index].visited = true;
+						index++;
+						crawler.href_url_count++;
+					}
+					else
+					{
+						fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+						memset(crawler.href_url[index].resource_filename,'\0', 512);
+						memset(crawler.href_url[index].hostname,'\0', 32);
+						crawler.href_url[index].visited = false;
+					}
 				}
 			}
 	//	}
