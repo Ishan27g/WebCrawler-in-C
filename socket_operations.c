@@ -121,7 +121,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		fprintf( stderr,"\nSent request\n%s", request_str);
 	}
         /* Receiving file size */
-	len = recv(client_socket, buffer, 1000, MSG_WAITALL);
+	len = recv(client_socket, buffer, 1000, 0);
 	//len =read(client_socket, buffer, sizeof(buffer)-1);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
