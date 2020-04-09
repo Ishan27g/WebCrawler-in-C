@@ -68,9 +68,9 @@ int main(int argc, char **argv)
 //	strcat(resource," ");
 
 //	fprintf( stderr,"\nresource is [%s]\n", resource);
-	if( resource[strlen(resource)] == ' ')
+	if( resource[strlen(resource) - 2] == ' ')
 	{
-		resource[strlen(resource)]='\0';
+		resource[strlen(resource)- 2]='\0';
 		fprintf( stderr,"\nresource is [%s]\n", resource);
 	}
 	fprintf( stderr,"\nog host is [%s]\n", original_host);
