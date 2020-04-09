@@ -87,6 +87,7 @@ int main(int argc, char **argv)
         close(client_socket);
 	if(ret == 2)
 	{
+		sleep(3);
 		client_socket = initialise_socket("");
 		//#else
 		//	client_socket = initialise_socket("localhost");
@@ -156,6 +157,7 @@ int main(int argc, char **argv)
 		fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
 		fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
 			
+		sleep(3);
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
 		fprintf(stderr,"\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
@@ -165,6 +167,7 @@ int main(int argc, char **argv)
 		{
 			fprintf(stderr,"\nretrying again\n");
 			//sleep(5);
+			sleep(3);
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
