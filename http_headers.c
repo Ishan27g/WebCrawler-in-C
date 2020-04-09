@@ -45,6 +45,11 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 		{
 			dest->http_content_length = atoi(value);
 		}
+		else if(strstr(key,"Retry-After") !=NULL)
+		{
+			dest->http_retry_after = atoi(value);
+			fprintf(stderr,"\nretry after %d\n",dest->http_retry_after);
+		}
 		else
 		{
 			return NULL;

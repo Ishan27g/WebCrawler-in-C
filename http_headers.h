@@ -8,6 +8,7 @@ typedef struct Http_rsp_headers{
 	char http_server[512];
 	char http_content_type[50];
 	int http_content_length;
+	int http_retry_after;
 } Http_header;
 
 enum http_rsp_code{
