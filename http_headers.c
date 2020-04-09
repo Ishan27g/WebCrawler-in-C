@@ -4,7 +4,7 @@
 void* fill_http_header(char *dest_string, Http_header *dest)
 {
 	if(!dest_string || !dest){
-		printf("\nEmpty pointer passed\n");
+		return NULL;
 	}
 	char *key, *value, *tmp;
 	char* tmp2 = NULL;
@@ -48,19 +48,16 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 		else if(strstr(key,"Retry-After") !=NULL)
 		{
 			dest->http_retry_after = atoi(value);
-			fprintf(stderr,"\nretry after %d\n",dest->http_retry_after);
 		}
 		else if(strstr(key,"Location") !=NULL)
 		{
 			memset(dest->http_location,'\0',sizeof(dest->http_location));
 			strcpy(dest->http_location, value);
-			fprintf(stderr,"\nretry location is %s\n",dest->http_location);
 		}
 		else if(strstr(key,"Location") !=NULL)
 		{
 			memset(dest->http_location,'\0',sizeof(dest->http_location));
 			strcpy(dest->http_location, value);
-			fprintf(stderr,"\nretry location is %s\n",dest->http_location);
 		}
 		else
 		{
@@ -76,7 +73,7 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 {
 	if(!buffer || !dest){
-		printf("\nEmpty pointer passed\n");
+		return NULL;
 	}
 	char *dest_string, *dest_temp;
 	char string_copy[1024];
@@ -88,15 +85,9 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 		if(dest_string != NULL)
 		{
 			memset(string_copy, '\0', 1024);
-		       //	= malloc(strlen(dest_string));
 			strcpy(string_copy, dest_string);
 			fill_http_header(string_copy, dest);
-/*			if(string_copy)
-			{
-				free(string_copy);
-				string_copy = NULL;
-			}
-*/		}
+		}
 	} while ((dest_string = strtok_r(NULL, "\n", &dest_temp)) != NULL);
 	return NULL;
 

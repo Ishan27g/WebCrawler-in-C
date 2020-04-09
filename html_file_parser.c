@@ -15,16 +15,10 @@ void* free_ptr(void* ptr)
 int lookup_duplicate_page(char* pagename)
 {
 	int i=0;
-	fprintf(stderr,"\nwhile looking up,crawler.href_url_count is %d\n",crawler.href_url_count);
 	for(i=0; i < crawler.href_url_count; i++)
 	{
-		fprintf(stderr,"\ncomparing [%s] with [%s]\n",pagename, crawler.href_url[i].resource_filename);
 		if(strcmp(pagename, crawler.href_url[i].resource_filename) == 0)
 		{
-			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-			fprintf(stderr,"\nNot crawling duplicate resource %s, already visited at %s . %s\n",pagename,
-				       crawler.href_url[i].hostname, crawler.href_url[i].resource_filename);
-			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			return 0;
 		}
 	}
@@ -36,7 +30,6 @@ int match_host(char* href_host)
 {
 	if(href_host == NULL)
 	{
-		fprintf(stderr,"\nhost is null, not present in line, dont add the crawler_obj->href_element");
 		return 0;
 	}
 	char* href_copy = (char*)malloc(strlen(href_host));
@@ -46,7 +39,6 @@ int match_host(char* href_host)
 	strcpy(hostname_copy, original_host);
 	char* ho = strstr(hostname_copy,".");
 	char* hr = strstr(href_copy,".");
-//	fprintf(stderr,"\ncomparing hosts %s and %s\n",ho,hr);
 	if (strcmp(ho, hr) == 0)
 		return 1;
 	else
@@ -89,7 +81,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 	strcpy(source_string_copy, source_string);
 	strcpy(source_string_copy_dots, source_string);
 
-	fprintf(stderr,"\nto extract %s\n",source_string);
 
 	int ret;	
 	int dots;
@@ -102,9 +93,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 	}
 	components = strtok_r(source_string_copy_dots, "\"", &dest_temp);
 	strcpy(source_string_copy, components);
-	//fprintf(stderr,"\ncopied %s\n",source_string_copy_dots);
-	//jump string pointer to point to start of url
-	//tokenise with 1st quotation char
 	dots = count_dots(components);
 	//	}
 	//	else
@@ -165,9 +153,6 @@ bool extract(char* source_string, Href_url* href_url_element)
 //#endif
 		if(ret == 0)
 		{
-			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-			fprintf(stderr,"\nNot crawling url(host_mismatch) :  %s\n",components);
-			fprintf(stderr,"\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			return false;
 		}
 		strncpy(href_url_element->hostname, components, strlen(components));
@@ -194,7 +179,6 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 	save_ptr = (char*) malloc(strlen(source_string));
 	if(!save_ptr)
 	{
-		fprintf(stderr,"\nmalloc failed\n");
 		return false;
 	}
 	ptr = check_tag(source_string,"http://");
@@ -246,7 +230,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("href="));
@@ -268,7 +251,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("href ="));
@@ -290,7 +272,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("href = "));
@@ -312,7 +293,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("href= "));
@@ -334,7 +314,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("HREF="));
@@ -356,7 +335,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("HREF ="));
@@ -378,7 +356,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("HREF = "));
@@ -400,7 +377,6 @@ bool extract_href_url(char* source_string, Href_url* href_url_element)
 		save_ptr = (char*) malloc(strlen(source_string));
 		if(!save_ptr)
 		{
-			fprintf(stderr,"\nmalloc failed\n");
 			return false;
 		}
 		strcpy(save_ptr, ptr + strlen("HREF= "));
@@ -427,18 +403,11 @@ int read_file(char* filename)
 // 	Web_crawler* crawler_obj = &crawler;
 	int index = crawler.href_url_count;//add data to last valid index
 
-	fprintf(stderr,"\nbefore reading file, crawler.href_url_count is %d\n",crawler.href_url_count);
 	if(!file)
 	{
-		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
 		return 0;
 	}
 	while(fgets(full_line, 1024, file)) {
-		/*remove newline character*/
-		//full_line[strlen(full_line) - 1]='\0';
-//		if(strlen(full_line) > 0)
-//		{
-//			fprintf(stderr,"\nline is [%s]",full_line);
 			if(strstr(full_line, ".html") != NULL)
 			{
 				if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
@@ -447,22 +416,14 @@ int read_file(char* filename)
 					{
 
 						strcpy(full_line_copy, full_line);
-						fprintf(stderr,"\n^^^^$$$$^^^^extracting [%s] at index %d\n",full_line_copy,index);
 						if(extract_href_url(full_line_copy, &(crawler.href_url[index])) 
 								== true)
 						{	
-							fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-							fprintf(stderr,"\n%d\n",__LINE__);
-							fprintf(stderr,"\n%d\n",__LINE__);
 							index++;
-							fprintf(stderr,"\n%d\n",__LINE__);
 							crawler.href_url_count++;
-							fprintf(stderr,"\n%d\n",__LINE__);
 						}
 						else
 						{
-							//fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
-							fprintf(stderr,"\n%d\n",__LINE__);
 							memset(crawler.href_url[index].resource_filename,'\0', 1024);
 							memset(crawler.href_url[index].hostname,'\0', 32);
 						}
