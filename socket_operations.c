@@ -205,18 +205,18 @@ int send_receive_socket_data(int client_socket, char* resource)
 	while(len > 0)
 	{
 		len = recv(client_socket, buffer, 512, 0);
-		if(len < 0)
+		if(len <= 0)
 		{
-			continue;
+			break;
 		}
 		else
 		{
-			len1 +=	fwrite(buffer, sizeof(char), len, received_file);
+			len = fwrite(buffer, sizeof(char), len, received_file);
 		}
-		data_remaining = data_remaining - len;
+		//data_remaining = data_remaining - len;
 	}
 
-	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len1);
+	fprintf(stderr,"\n****finished writing file : added len %d more****\n",len);
         fclose(received_file);
 	return 1;
 }
