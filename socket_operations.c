@@ -37,6 +37,10 @@ int validate_rsp_code(char* http_rsp_code)
 	{
 		return HTTP_RSP_301_MOVED_PERM;
 	}
+	if(strstr(http_rsp_code, "401") != NULL)
+	{
+		return HTTP_RSP_401_NOT_AUTH;
+	}
 	else
 		return 100;	
 }
