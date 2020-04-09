@@ -446,7 +446,7 @@ int read_file(char* filename)
 		fprintf(stderr,"\nfailed to open %s\n",HTML_FILE_LOCAL);
 		return 0;
 	}
-	while(fgets(full_line, 1024, file)) {
+	while(fgets(full_line, 512, file)) {
 		/*remove newline character*/
 		//full_line[strlen(full_line) - 1]='\0';
 //		if(strlen(full_line) > 0)
@@ -463,9 +463,13 @@ int read_file(char* filename)
 							== true)
 					{	
 						fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+						fprintf(stderr,"\n%d\n",__LINE__);
 						crawler.href_url[index].visited = true;
+						fprintf(stderr,"\n%d\n",__LINE__);
 						index++;
+						fprintf(stderr,"\n%d\n",__LINE__);
 						crawler.href_url_count++;
+						fprintf(stderr,"\n%d\n",__LINE__);
 					}
 					else
 					{
@@ -477,7 +481,7 @@ int read_file(char* filename)
 				}
 			}
 	//	}
-		memset(full_line,'\0',1024);
+		memset(full_line,'\0',512);
 	}
 	fclose(file);
 	crawler.href_url_count = index;

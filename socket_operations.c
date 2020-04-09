@@ -88,17 +88,17 @@ int send_receive_socket_data(int client_socket, char* resource)
 	char deletethis[1024];
 
 
-	char request_str[512];
+	char request_str[1024];
 	int len;
         FILE *received_file;
-	char buffer[BUFSIZ*2];
-	char html_content[BUFSIZ];
+	char buffer[1024];
+	char html_content[1024];
 	int n;
 	Http_header http_head;
 	if(resource == NULL)
 	{
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + 1;
-		memset(request_str,'\0',512);
+		memset(request_str,'\0',1024);
 		sprintf(request_str,"GET / %s",HTTP_REQ_STR);
 //		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
@@ -106,7 +106,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	else
 	{
 		len = HTTP_REQ_STR_LEN + strlen("GET /") + strlen(resource) + 1;
-		memset(request_str,'\0',512);
+		memset(request_str,'\0',1024);
 		sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
 //		request_str[strlen(request_str)] = '\0';
 //		fprintf( stderr,"\nSending request :\n[%s]\n",request_str);
@@ -127,7 +127,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 		return 0;
         }
         /* Receiving file size */
-	len = recv(client_socket, buffer, 512, 0);
+	len = recv(client_socket, buffer, 1000, 0);
 	//len =read(client_socket, buffer, sizeof(buffer)-1);
 	fprintf( stderr,"\nResponse message of length: %d\n\n",len);
 	
@@ -204,13 +204,13 @@ int send_receive_socket_data(int client_socket, char* resource)
 	while(data_remaining > 0)
 	{
 		len = recv(client_socket, buffer, 512, 0);
-		if(len == 0)
+		if(len < 0)
 		{
 			continue;
 		}
 		else
 		{
-			len1 +=	fwrite(buffer, sizeof(char), len, received_file);
+			len1 +=	fwrite(buffer, sizeof(char), data_remaining, received_file);
 		}
 		data_remaining = data_remaining - len;
 	}
