@@ -85,12 +85,31 @@ int main(int argc, char **argv)
 	/*send request and recieve valid text/html resource*/
 	int ret = send_receive_socket_data(client_socket, resource);
         close(client_socket);
-	if(ret != 1)
+	if(ret == 2)
 	{
-		fprintf(stderr,"\nCONTENT IS NOT TEXT/HTML\n");
-		free(original_host);
-		free(resource);
-		return 0;
+		client_socket = initialise_socket("");
+		//#else
+		//	client_socket = initialise_socket("localhost");
+		//	strcpy(original_host, "web1.comp30023");
+		//#endif
+		if(client_socket == 0)
+		{
+			fprintf( stderr,"\nsocket not initialised\n");
+			free(original_host);
+			free(resource);
+			return 0;
+		}
+		//sleep(5);
+		fprintf(stderr,"\nSending request.again...for....resource = %s\n",resource);
+		/*send request again and recieve valid text/html resource*/
+		ret = send_receive_socket_data(client_socket, resource);
+		close(client_socket);
+		if(ret != 1)
+		{
+			free(original_host);
+			free(resource);
+			return 0;
+		}
 	}
 	int i=0;
 	int href_count = 0;
@@ -143,8 +162,8 @@ int main(int argc, char **argv)
 		close(client_socket);
 		if( ret == 2)
 		{
-			fprintf(stderr,"\nretrying again after 5 seconds-\n");
-			sleep(5);
+			fprintf(stderr,"\nretrying again\n");
+			//sleep(5);
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);

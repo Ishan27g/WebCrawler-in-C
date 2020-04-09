@@ -157,10 +157,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 
 	int data_remaining = http_head.http_content_length > len ? (http_head.http_content_length - len) : 0;
 	fprintf(stderr,"\ndata_remaining = %d\n",data_remaining);
-	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
-	fprintf(stderr,"\n**** writing initial data to file of len %d****\n", http_head.http_content_length);
 
-//	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER START________*******_______________\n");
 	if(http_head.http_version)
 		fprintf(stderr,"\nversion is %s",http_head.http_version);
 	if(http_head.http_rsp_code)
@@ -212,11 +209,13 @@ int send_receive_socket_data(int client_socket, char* resource)
 		fwrite(buffer, sizeof(char), len, received_file);
 	}
 #endif
+	fprintf(stderr,"\nContent type and status valid.............\n");
+	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
+	fprintf(stderr,"\n**** writing initial data to file of len %d****\n", http_head.http_content_length);
 	len = 0;
 	int len1=0;
 	while(data_remaining > 0)
 	{
-		fprintf(stderr,"\nContent type and status valid, reading more data.............\n");
 		len = recv(client_socket, buffer, 512, 0);
 		len1+=len;
 		if(len == 0)
