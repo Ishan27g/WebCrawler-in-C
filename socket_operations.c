@@ -85,6 +85,9 @@ int initialise_socket(char* crawling_host)
 }
 int send_receive_socket_data(int client_socket, char* resource)
 {
+	char deletethis[1024];
+
+
 	char request_str[512];
 	int len;
         FILE *received_file;
@@ -138,6 +141,9 @@ int send_receive_socket_data(int client_socket, char* resource)
 	
 	memset(html_content,'\0',BUFSIZ);
 
+	memset(deletethis,'\0',1024);
+	strncpy(deletethis, buffer, len);
+
 	get_http_header(buffer, &http_head, &html_content[0]);
 //	fprintf(stderr,"\nhtml content is \n%s\n",html_content);
 	
@@ -169,7 +175,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	switch (http_rsp_code)
 	{	
 		case HTTP_RSP_503_SERVICE_UNAVAILABLE:
-			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable+------+++++------++\n[%s]",html_content);
+			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable+------+++++------++\n[%s]",deletethis);
 			return 2;//retry after
 		case HTTP_RSP_200_SUCCESS:
 			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
