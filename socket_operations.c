@@ -153,7 +153,6 @@ int send_receive_socket_data(int client_socket, char* resource)
 	fprintf(stderr,"\ndata_remaining = %d\n",data_remaining);
 	fwrite(html_content, sizeof(char), http_head.http_content_length, received_file);
 	fprintf(stderr,"\n**** writing initial data to file of len %d****\n", http_head.http_content_length);
-	//fwrite(html_content, sizeof(char), strlen(html_content), received_file);
 
 //	fprintf(stderr,"\n*******____________HTTP RESPONSE HEADER START________*******_______________\n");
 	if(http_head.http_version)
@@ -170,7 +169,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 	switch (http_rsp_code)
 	{	
 		case HTTP_RSP_503_SERVICE_UNAVAILABLE:
-			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable+------+++++------++\n");
+			fprintf(stderr,"\n-----+++++++++-----++++++service unavailable+------+++++------++\n[%s]",html_content);
 			return 2;//retry after
 		case HTTP_RSP_200_SUCCESS:
 			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
