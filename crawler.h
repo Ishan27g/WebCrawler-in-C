@@ -17,8 +17,8 @@
 
 
 #define HTTP_REQ_STR_LEN strlen(HTTP_REQ_STR)
-//#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: 172.26.129.100\r\n\r\n"
-#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: 172.26.129.100\r\nConnection: keep-alive\r\n\r\n"
+#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: igoyal_c30023\r\n\r\n"
+//#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: 172.26.129.100\r\nConnection: keep-alive\r\n\r\n"
 #ifdef VM_DEBUG_ON
 	#define PORT_NUMBER 8080
 #else
