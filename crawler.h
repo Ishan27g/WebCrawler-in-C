@@ -25,7 +25,7 @@
 	#define PORT_NUMBER 80
 #endif
 
-#define HTML_FILE_LOCAL "local_html_file.html"
+#define HTML_FILE_LOCAL "local.html"
 #define MAX_URL_STR_LEN 256
 #define QUEUE_SIZE 256
 

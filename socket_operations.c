@@ -183,7 +183,7 @@ int send_receive_socket_data(int client_socket, char* resource)
 			return 2;//retry after
 		case HTTP_RSP_200_SUCCESS:
 			fprintf(stderr,"\n-----+++++++++-----++++++200 OK RESPONSE+------+++++------++\n");
-			return HTTP_RSP_200_SUCCESS;
+			break;
 		case HTTP_RSP_301_MOVED_PERM:
 			strncpy(http_extension.http_location, http_head.http_location, strlen(http_head.http_location));
 			fprintf(stderr,"\n-----+++++++++-----+++++301 moved rsp+------+++++------++[%s]\n",http_extension.http_location);
