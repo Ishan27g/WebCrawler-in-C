@@ -120,12 +120,6 @@ int send_receive_socket_data(int client_socket, char* resource)
 	{
 		fprintf( stderr,"\nSent request\n%s", request_str);
 	}
-	received_file = fopen(HTML_FILE_LOCAL, "w");
-        if (received_file == NULL)
-        {
-		fprintf( stderr,"Failed to open local file");
-		return 0;
-        }
         /* Receiving file size */
 	len = recv(client_socket, buffer, 1000, 0);
 	//len =read(client_socket, buffer, sizeof(buffer)-1);
@@ -198,6 +192,12 @@ int send_receive_socket_data(int client_socket, char* resource)
 	}
 //#endif
 	fprintf(stderr,"\nContent type and status valid.............\n");
+	received_file = fopen(HTML_FILE_LOCAL, "w");
+        if (received_file == NULL)
+        {
+		fprintf( stderr,"Failed to open local file");
+		return 0;
+        }
 	int len1 = fwrite(html_content, sizeof(char), len, received_file);
 	fprintf(stderr,"\n**** writing initial data to file of len %d****\n",len1);
 	//while(data_remaining > 0)
