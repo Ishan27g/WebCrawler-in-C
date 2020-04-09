@@ -19,11 +19,14 @@ enum http_rsp_code{
 	HTTP_RSP_414_REQ_URI_LONG,
 	HTTP_RSP_410_PERM_GONE,
 	HTTP_RSP_404_NOT_FOUND,
+	HTTP_RSP_401_NOT_AUTH,
 	HTTP_RSP_301_MOVED_PERM,
 };
 
 typedef struct Http_extension{
 	char http_location[1000];
+	char auth_username[10];
+	char auth_password[10];
 }Http_extension;
 
 

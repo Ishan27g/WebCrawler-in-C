@@ -56,6 +56,12 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 			strcpy(dest->http_location, value);
 			fprintf(stderr,"\nretry location is %s\n",dest->http_location);
 		}
+		else if(strstr(key,"Location") !=NULL)
+		{
+			memset(dest->http_location,'\0',sizeof(dest->http_location));
+			strcpy(dest->http_location, value);
+			fprintf(stderr,"\nretry location is %s\n",dest->http_location);
+		}
 		else
 		{
 			return NULL;

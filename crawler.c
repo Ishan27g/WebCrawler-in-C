@@ -106,6 +106,32 @@ int main(int argc, char **argv)
 			return 0;
 		}
 	}
+
+	if(ret == HTTP_RSP_401_NOT_AUTH)
+	{
+		sleep(1);
+		client_socket = initialise_socket("");
+		if(client_socket == 0)
+		{
+			fprintf( stderr,"\nsocket not initialised\n");
+			free(original_host);
+			free(resource);
+			return 0;
+		}
+		/*send request again and recieve valid text/html resource*/
+		char *auth =(char*) malloc(512);
+		sprintf(auth,"%s %s",resource,HTTP_AUTH_STR);
+		fprintf(stderr,"\nSending auth request...for....resource = %s\n",auth);
+		ret = send_receive_socket_data(client_socket,auth);
+		free(auth);
+		close(client_socket);
+		if(ret != 1)
+		{
+			free(original_host);
+			free(resource);
+			return 0;
+		}
+	}
 	if(ret == HTTP_RSP_301_MOVED_PERM)
 	{
 		sleep(1);

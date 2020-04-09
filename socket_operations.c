@@ -188,6 +188,8 @@ int send_receive_socket_data(int client_socket, char* resource)
 			strncpy(http_extension.http_location, http_head.http_location, strlen(http_head.http_location));
 			fprintf(stderr,"\n-----+++++++++-----+++++301 moved rsp+------+++++------++[%s]\n",http_extension.http_location);
 			return HTTP_RSP_301_MOVED_PERM;
+		case HTTP_RSP_401_NOT_AUTH:
+			return HTTP_RSP_401_NOT_AUTH;
 		case HTTP_RSP_414_REQ_URI_LONG:
 		case HTTP_RSP_410_PERM_GONE:
 		case HTTP_RSP_404_NOT_FOUND:
