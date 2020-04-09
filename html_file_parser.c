@@ -449,8 +449,8 @@ int read_file(char* filename)
 	while(fgets(full_line, 1024, file)) {
 		/*remove newline character*/
 		//full_line[strlen(full_line) - 1]='\0';
-		if(strlen(full_line) > 0)
-		{
+//		if(strlen(full_line) > 0)
+//		{
 //			fprintf(stderr,"\nline is [%s]",full_line);
 			if((check_tag(full_line,"<a") != NULL) || (check_tag(full_line,"<A")) != NULL)
 			{
@@ -472,8 +472,8 @@ int read_file(char* filename)
 					crawler.href_url[index].visited = false;
 				}
 			}
-		}
-		memset(full_line,'\0',512);
+	//	}
+		memset(full_line,'\0',1024);
 	}
 	fclose(file);
 	crawler.href_url_count = index;
