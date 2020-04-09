@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	}
 	
 	/*send request and recieve valid text/html resource*/
-	int ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG);
+	int ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG, 0);
         close(client_socket);
 	if(ret == HTTP_RSP_504_GW_TIMEOUT)
 	{
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 		}
 		fprintf(stderr,"\nSending request.again...for....resource = %s\n",resource);
 		/*send request again and recieve valid text/html resource*/
-		ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG);
+		ret = send_receive_socket_data(client_socket, resource, HTTP_REQ_FLAG, 0);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 		}
 		/*send request again and recieve valid text/html resource*/
 		fprintf(stderr,"\nSending auth request...for....resource = %s\n",resource);
-		ret = send_receive_socket_data(client_socket, resource, HTTP_RSP_401_NOT_AUTH);
+		ret = send_receive_socket_data(client_socket, resource, HTTP_RSP_401_NOT_AUTH, 0);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 		}
 		fprintf(stderr,"\nSending 301 request...for....resource = %s\n",http_extension.http_location);
 		/*send request again and recieve valid text/html resource*/
-		ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG);
+		ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG, 0);
 		close(client_socket);
 		if(ret != 1)
 		{
@@ -169,12 +169,12 @@ int main(int argc, char **argv)
 		memset(crawler.href_url[i].resource_filename,'\0',sizeof(crawler.href_url[i].resource_filename));
 		memset(crawler.href_url[i].hostname,'\0',sizeof(crawler.href_url[i].hostname));
 		//use this somewhere ?????
-		crawler.href_url[i].visited = false;
+		crawler.href_url[i].relative = 0;
 	}
 	//need to add the first url to crawler_obj
 	strcpy(crawler.href_url[0].resource_filename, resource); 
 	strcpy(crawler.href_url[0].hostname, original_host); 
-	crawler.href_url[0].visited = true;
+	crawler.href_url[0].relative = 0;
 	crawler.href_url_count++;
 	
 	fprintf(stderr,"\nLink Crawled:\ncrawler.href_url[%d].resource_filename : %s",0,crawler.href_url[0].resource_filename);
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
 		fprintf(stderr,"\nSending request for [%d]..resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
-		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG);
+		ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG, crawler.href_url[i].relative);
 		close(client_socket);
 		if( ret == HTTP_RSP_504_GW_TIMEOUT)
 		{
@@ -215,7 +215,7 @@ int main(int argc, char **argv)
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
-			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG);
+			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_REQ_FLAG, crawler.href_url[i].relative);
 			close(client_socket);
 		}
 
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending auth request for [%d]... again ....resource_filename = %s\n",i, crawler.href_url[i].resource_filename);
-			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_RSP_401_NOT_AUTH);
+			ret = send_receive_socket_data(client_socket, crawler.href_url[i].resource_filename, HTTP_RSP_401_NOT_AUTH, crawler.href_url[i].relative);
 			close(client_socket);
 		}
 		else if(ret == HTTP_RSP_301_MOVED_PERM)
@@ -240,7 +240,7 @@ int main(int argc, char **argv)
 			client_socket = initialise_socket(crawler.href_url[i].hostname);
 			ret = 0;
 			fprintf(stderr,"\nSending auth request for [%d]... again ....resource_filename = %s\n",i, http_extension.http_location);
-			ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG);
+			ret = send_receive_socket_data(client_socket, http_extension.http_location, HTTP_REQ_FLAG, 0);
 			close(client_socket);
 		}
 		else

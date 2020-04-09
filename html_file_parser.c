@@ -140,7 +140,10 @@ bool extract(char* source_string, Href_url* href_url_element)
 		}
 		ret = lookup_duplicate_page(href_url_element->resource_filename);
 		if(ret ==1)
+		{
+			href_url_element->relative = 1;
 			return true;
+		}
 		else
 			return false;
 	}
@@ -450,7 +453,6 @@ int read_file(char* filename)
 						{	
 							fprintf(stderr,"\nadded\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
 							fprintf(stderr,"\n%d\n",__LINE__);
-							crawler.href_url[index].visited = true;
 							fprintf(stderr,"\n%d\n",__LINE__);
 							index++;
 							fprintf(stderr,"\n%d\n",__LINE__);
@@ -463,7 +465,6 @@ int read_file(char* filename)
 							fprintf(stderr,"\n%d\n",__LINE__);
 							memset(crawler.href_url[index].resource_filename,'\0', 1024);
 							memset(crawler.href_url[index].hostname,'\0', 32);
-							crawler.href_url[index].visited = false;
 						}
 					}
 				}

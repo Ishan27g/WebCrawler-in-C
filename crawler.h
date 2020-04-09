@@ -33,7 +33,7 @@
 typedef struct Href_url_tag{
 	char resource_filename[1024];
 	char hostname[32];
-	bool visited;
+	int relative;
 }Href_url;
 
 typedef struct Web_crawler_struct{

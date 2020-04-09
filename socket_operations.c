@@ -93,7 +93,7 @@ int initialise_socket(char* crawling_host)
         }
 	return client_socket;
 }
-int send_receive_socket_data(int client_socket, char* resource, int flag)
+int send_receive_socket_data(int client_socket, char* resource, int flag, int relative)
 {
 	char deletethis[1024];
 
@@ -115,12 +115,26 @@ int send_receive_socket_data(int client_socket, char* resource, int flag)
 		if(flag == HTTP_RSP_401_NOT_AUTH)
 		{
 			memset(request_str,'\0',1024);
-			sprintf(request_str,"GET /%s %s",resource, HTTP_AUTH_STR);
+			if(relative == 1)
+			{	
+				sprintf(request_str,"GET %s %s",resource, HTTP_AUTH_STR);
+			}
+			else
+			{
+				sprintf(request_str,"GET /%s %s",resource, HTTP_AUTH_STR);
+			}
 		}
 		else
 		{
 			memset(request_str,'\0',1024);
-			sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
+			if(relative == 1)
+			{	
+				sprintf(request_str,"GET %s %s",resource, HTTP_REQ_STR);
+			}
+			else
+			{
+				sprintf(request_str,"GET /%s %s",resource, HTTP_REQ_STR);
+			}
 		}
 	}
 	n = write(client_socket, request_str, strlen(request_str));
