@@ -17,7 +17,7 @@
 
 
 #define HTTP_REQ_STR_LEN strlen(HTTP_REQ_STR)
-#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: igoyal_c30023\r\n\r\n"
+#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: igoyal_c30023\r\nConnection: close\r\n\r\n"
 //#define HTTP_REQ_STR "HTTP/1.1\r\nUser-Agent: igoyal\r\nHost: 172.26.129.100\r\nConnection: keep-alive\r\n\r\n"
 #ifdef VM_DEBUG_ON
 	#define PORT_NUMBER 8080
@@ -32,7 +32,6 @@
 typedef struct Href_url_tag{
 	char resource_filename[1024];
 	char hostname[32];
-	char local_file[32];
 	bool visited;
 }Href_url;
 typedef struct Web_crawler_struct{

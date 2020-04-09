@@ -116,13 +116,10 @@ int main(int argc, char **argv)
 	int href_count = 0;
 
 	crawler.href_url_count = 0;
-
 	for(i=0;i<100;i++)
 	{	
-/*		memset(crawler.href_url[i].resource_filename,'\0',sizeof(crawler.href_url[i].resource_filename));
+		memset(crawler.href_url[i].resource_filename,'\0',sizeof(crawler.href_url[i].resource_filename));
 		memset(crawler.href_url[i].hostname,'\0',sizeof(crawler.href_url[i].hostname));
-		memset(crawler.href_url[i].local_file,'\0',sizeof(crawler.href_url[i].local_file));
-*/		
 		//use this somewhere ?????
 		crawler.href_url[i].visited = false;
 	}
@@ -204,8 +201,8 @@ int main(int argc, char **argv)
 		}
 	}
 #endif
-	free(original_host);
-	free(resource);
+//	free(original_host);
+//	free(resource);
 	return 0;
 }
 

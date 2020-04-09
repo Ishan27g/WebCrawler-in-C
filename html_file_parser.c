@@ -242,7 +242,7 @@ bool extract_url(char* source_string, Href_url* href_url_element)
 	}
 	else
 	{
-		free_ptr(save_ptr);
+		//free_ptr(save_ptr);
 		return false;
 	}
 	return false;
@@ -475,7 +475,8 @@ int read_file(char* filename)
 						}
 						else
 						{
-							fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+							//fprintf(stderr,"\nremoving\ncrawler_obj.href_url[%d].resource_filename [%s]\n",index, crawler.href_url[index].resource_filename);
+							fprintf(stderr,"\n%d\n",__LINE__);
 							memset(crawler.href_url[index].resource_filename,'\0', 1024);
 							memset(crawler.href_url[index].hostname,'\0', 32);
 							crawler.href_url[index].visited = false;
