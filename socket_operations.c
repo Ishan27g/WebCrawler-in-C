@@ -235,15 +235,15 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	int len1 = fwrite(html_content, sizeof(char), len, received_file);
 	fprintf(stderr,"\n**** writing initial data to file of len %d****\n",len1);
 	//while(data_remaining > 0)
-	memset(buffer,'\0',1000);
-
-
-	if(data_remaining > 0)
+	//if(data_remaining > 0)
+	while(data_remaining > 0)
 	{
-		len = recv(client_socket, buffer, 512, 0);
+		memset(buffer,'\0',1000);
+		len = recv(client_socket, buffer, 1000, 0);
 		if(len > 0)
 		{
 			len1 = fwrite(buffer, sizeof(char), len, received_file);
+			data_remaining = data_remaining - len;
 		}
 	}
 
