@@ -4,7 +4,7 @@
 void* fill_http_header(char *dest_string, Http_header *dest)
 {
 	if(!dest_string || !dest){
-		return NULL;
+		//fprintf("\nEmpty pointer passed\n");
 	}
 	char *key, *value, *tmp;
 	char* tmp2 = NULL;
@@ -16,7 +16,6 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 
 	if(strstr(key,"HTTP") != NULL)
 	{
-		//dest->http_version = malloc(4);
 		memset(dest->http_version,'\0',sizeof(dest->http_version));
 		memset(dest->http_rsp_code,'\0',sizeof(dest->http_version));
 		strcpy(dest->http_version,strtok_r(key, " ", &tmp2));
@@ -68,12 +67,10 @@ void* fill_http_header(char *dest_string, Http_header *dest)
 }
 
 
-
-
 void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 {
 	if(!buffer || !dest){
-		return NULL;
+	//	fprintf(stdout,"\nEmpty pointer passed\n");
 	}
 	char *dest_string, *dest_temp;
 	char string_copy[1024];
@@ -92,3 +89,4 @@ void* get_http_header(char* buffer, Http_header *dest, char* html_content)
 	return NULL;
 
 }
+

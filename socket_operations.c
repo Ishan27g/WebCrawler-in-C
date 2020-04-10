@@ -62,6 +62,7 @@ int initialise_socket(char* crawling_host)
 	}
 	if(!localhost_server)
 	{
+		fprintf( stderr,"\nERROR, no such host\n");
 		return 0;
 	}	
         
@@ -74,12 +75,14 @@ int initialise_socket(char* crawling_host)
         client_socket = socket(AF_INET, SOCK_STREAM, 0);
         if (client_socket < 0)
         {
+            fprintf( stderr,"\nERROR opening socket\n\n");
 	    return 0;
         }
 
         /* Connect to the server */
         if (connect(client_socket, (struct sockaddr *)&server_socket, sizeof(struct sockaddr)) == -1)
         {
+                fprintf( stderr,"\nError on connect %s\n\n", strerror(errno));
 
                 exit(EXIT_FAILURE);
         }
@@ -95,6 +98,7 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
         FILE *received_file;
 	char buffer[1024];
 	char html_content[1024];
+	int n;
 	Http_header http_head;
 	if(resource == NULL)
 	{
@@ -128,10 +132,17 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 			}
 		}
 	}
-	write(client_socket, request_str, strlen(request_str));
+	n = write(client_socket, request_str, strlen(request_str));
+	if( n<0)
+	{
+		fprintf( stderr,"\nError in sending request\n");
+	}
+	else
+	{
+		fprintf( stderr,"\nSent request\n%s", request_str);
+	}
         /* Receiving file size */
 	len = recv(client_socket, buffer, 1000, 0);
-	
 	memset(http_head.http_version,'\0',sizeof(http_head.http_version));
 	memset(http_head.http_rsp_code,'\0',sizeof(http_head.http_rsp_code));
 	memset(http_head.http_server,'\0',sizeof(http_head.http_server));
@@ -146,7 +157,6 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	get_http_header(buffer, &http_head, &html_content[0]);
 	
 	int data_remaining = len > http_head.http_content_length? 0: http_head.http_content_length - len;
-
 	int http_rsp_code = validate_rsp_code(http_head.http_rsp_code);
 	switch (http_rsp_code)
 	{	
@@ -168,27 +178,28 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	}
 	if(strstr(http_head.http_content_type, MIME_TYPE_TEXT_HTML) == NULL)
 	{
-		//dont parse data
 		return 0;
 	}
 	received_file = fopen(HTML_FILE_LOCAL, "w");
         if (received_file == NULL)
         {
+		fprintf( stderr,"Failed to open local file");
 		return 0;
         }
-	int len1 = fwrite(html_content, sizeof(char), len, received_file);
+	fwrite(html_content, sizeof(char), len, received_file);
 	if(data_remaining > 0)
-//	while(data_remaining > 0)
+	//while(data_remaining > 0)
 	{
 		memset(buffer,'\0',1000);
 		len = recv(client_socket, buffer, 1000, 0);
 		if(len > 0)
 		{
-			len1 = fwrite(buffer, sizeof(char), len, received_file);
-			data_remaining = data_remaining - len1;
+			fwrite(buffer, sizeof(char), len, received_file);
+			data_remaining = data_remaining - len;
 		}
 	}
         fclose(received_file);
 	return 1;
 }
+
 
