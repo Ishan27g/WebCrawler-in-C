@@ -190,7 +190,7 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	if(data_remaining > 0)
 	{
 		memset(buffer,'\0',1000);
-		len = recv(client_socket, buffer, data_remaining, 0);
+		len = recv(client_socket, buffer, 1000, 0);
 		if(len > 0)
 		{
 			len = fwrite(buffer, sizeof(char), len, received_file);
