@@ -177,8 +177,8 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 		return 0;
         }
 	int len1 = fwrite(html_content, sizeof(char), len, received_file);
-	//if(data_remaining > 0)
-	while(data_remaining > 0)
+	if(data_remaining > 0)
+//	while(data_remaining > 0)
 	{
 		memset(buffer,'\0',1000);
 		len = recv(client_socket, buffer, 1000, 0);
