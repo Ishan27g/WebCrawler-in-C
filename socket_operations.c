@@ -187,14 +187,14 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 		return 0;
         }
 	fwrite(html_content, sizeof(char), len, received_file);
-	if(data_remaining > 0)
-	//while(data_remaining > 0)
+	//if(data_remaining > 0)
+	while(data_remaining > 0)
 	{
 		memset(buffer,'\0',1000);
-		len = recv(client_socket, buffer, 1000, 0);
+		len = recv(client_socket, buffer, data_remaining, 0);
 		if(len > 0)
 		{
-			fwrite(buffer, sizeof(char), len, received_file);
+			len = fwrite(buffer, sizeof(char), len, received_file);
 			data_remaining = data_remaining - len;
 		}
 	}

@@ -154,6 +154,7 @@ int main(int argc, char **argv)
 	//need to add the first url to crawler_obj
 	strcpy(crawler.href_url[0].resource_filename, resource); 
 	strcpy(crawler.href_url[0].hostname, original_host); 
+	fprintf(stdout,"\n%s/%s\n",crawler.href_url[0].hostname,crawler.href_url[0].resource_filename);		
 	crawler.href_url[0].relative = 0;
 	crawler.href_url_count++;
 	
@@ -165,9 +166,9 @@ int main(int argc, char **argv)
 	//now file is useles, valid content copied to crawler_obj, can delete
 	for(i=1;i<href_count;i++)
 	{
-		fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
-		fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
-			
+		//fprintf(stderr,"\ncrawler.href_url[%d].resource_filename : %s",i,crawler.href_url[i].resource_filename);
+		//fprintf(stderr,"\ncrawler.href_url[%d].hostname : %s\n",i,crawler.href_url[i].hostname);
+		fprintf(stdout,"\n%s/%s\n",crawler.href_url[i].hostname,crawler.href_url[i].resource_filename);		
 		sleep(1);
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
