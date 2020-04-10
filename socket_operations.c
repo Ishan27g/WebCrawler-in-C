@@ -135,11 +135,11 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 	n = write(client_socket, request_str, strlen(request_str));
 	if( n<0)
 	{
-		fprintf( stderr,"\nError in sending request\n");
+//		fprintf( stderr,"\nError in sending request\n");
 	}
 	else
 	{
-		fprintf( stderr,"\nSent request\n%s", request_str);
+//		fprintf( stderr,"\nSent request\n%s", request_str);
 	}
         /* Receiving file size */
 	len = recv(client_socket, buffer, 1000, 0);
@@ -187,8 +187,7 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
 		return 0;
         }
 	fwrite(html_content, sizeof(char), len, received_file);
-	//if(data_remaining > 0)
-	while(data_remaining > 0)
+	if(data_remaining > 0)
 	{
 		memset(buffer,'\0',1000);
 		len = recv(client_socket, buffer, data_remaining, 0);
@@ -201,5 +200,4 @@ int send_receive_socket_data(int client_socket, char* resource, int flag, int re
         fclose(received_file);
 	return 1;
 }
-
 
