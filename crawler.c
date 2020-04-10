@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 	href_count = read_file(HTML_FILE_LOCAL);
 	for(i=1;i<href_count;i++)
 	{
-		fprintf(stdout,"%s/%s",crawler.href_url[i].hostname,crawler.href_url[i].resource_filename);	
+		fprintf(stdout,"\n%s/%s",crawler.href_url[i].hostname,crawler.href_url[i].resource_filename);	
 		sleep(1);
 		client_socket = initialise_socket(crawler.href_url[i].hostname);
 		ret = 0;
